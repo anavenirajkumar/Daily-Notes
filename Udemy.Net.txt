@@ -1,0 +1,148 @@
+1) EntityFrameork 
+
+2) Microsoft.EntityFrameworkCore.Tools
+
+3) Microsoft.EntityFrameworkCore.SqlServer
+
+4) DATABASE connection => "appsetting.json"
+     "ConnectionStrings": {
+    "StudentAdminPortalDb" : "server=.;database=StudentAdminPortalDb;Trusted_Connection=true"
+  }
+
+5) Go to "Startup".cs
+   services.AddDbContext<StudentAdminContext>(options => options.UseSqlServer(Configuration.GetConnectionString("StudentAdminPortalDb")));
+
+6) Go to Tools -> NutGet Package Manager -> Package Manage Console
+  --> Command -> Add-Migration
+      Name : Initial migration
+      Name : Update-Database(My Project or Udemy Project)
+   *After Automatically Created "DATABASE" AND "Tables" 
+
+7) Open DATABASE ->StudentsAdminPortalDb -> "Click" -> New Query -> Paste Udemy DATA
+  *After SelectAll Click "Execute";
+  *Right Click "dbo.Student" -> Select top 1000 rows
+
+8) Create a "Repositories" Folder and Create a "Student Interface" and Inherit to "SqlStudentRepository";
+
+9) Create a "StudentController";
+
+10) Install "automapper" and "automapper extension microsoft dependency injection" from Datamodels to Models
+
+11) Create a "Profiles" Filder and Create a "AutoMapperprofile.cs"
+
+12) Go to "Startup.cs" Configuration "CORS" ? because Cannot Connect Angular :-    
+
+               services.AddCors((options) =>
+                    {
+                options.AddPolicy("angularApplication", (builder) =>
+                    {
+                    builder.WithOrigins("http://localhost:4200")
+                    .AllowAnyHeader()
+                    .WithMethods("GET", "POST", "PUT", "DELETE")
+                    .WithExposedHeaders("*");
+                });
+            });
+
+13)  *Create a "GetStudentAsync" in StudenController --------Flow ----------->
+     *Create a Interface "GetStudentAsync"
+     *Create a "GetStudentAsync" in SqlStudentRepository.cs;
+     *Create a "GetStudentAsync" in IStudentRepository.cs;
+
+14) *Create a "GetAllGender" Controller and Go to "IStudentRepository" Create a "GetGendersAsync"
+   *Create a "GetGenderstAsync" in SqlStudentRepository.cs;
+
+15) *Create a "UpdateStudentAsync" in StudenController
+    *Create a "Exists" in IStudentRepository.cs; 
+    *Create a "Exists" in SqlStudentRepository.cs;
+     *Create a "UpdateStudent" in IStudentRepository.cs; 
+    *Create a "UpdateStudent" in SqlStudentRepository.cs;
+    *Create a "UpdteStudentAfterMaps" in AfterMaps Folder;
+
+    *Create a "DeleteStudent" in Controler
+    *Create a "DeleteStudent" in IStudentRepository.cs; 
+    *Create a "DeleteStudent" in SqlStudentRepository.cs; (Implement Interface)
+
+    *Create a "AddStudent" in Controller;
+    *Create a "AddStudentRequest" in DomainModels Folder;
+    *Create a "AddStudent" in IStudentRepository.cs;
+    *Create a "AddStudent" in SqlStudentRepository.cs in (Implement Interface) 
+    *Create a "AddStudentRequest" in AutoMapperProfiles.cs'
+    *Create a "AddStudentRequestAfterMap" class in Profiles Folder
+    After Write Logic in Controllers
+
+    *Create a "UploadImage" in Controlers
+    *Create a "IImageRepository" Iterface in "Repositories" Folder
+    *Ceate a "LocalImageRepository" in "Repositories" Folder
+    *Create a "UpdateProfileImage" in IStudentRepository.cs;
+    *Create a "UpdateProfileImage" in SqlStudentRepository.cs in (Implement Interface) 
+ 
+    ------------------------ Server Side Validations ------------------------
+    1) install "FluentValidation.Asp.NetCore
+    2) Import in Services "Startup.cs" ->  services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
+    3) Create a "Validation" Folder and Create "AddStudentRequestValidator.cs"
+    4) Create a "UpdateStudentRequestValidator.cs"
+
+--------------------------------------------------------------------------------------------------
+----------------------------------------Diployment Angular----------------------------------------------------------
+
+1) go to environment.ts -> baseApiUrl : 'http://localhost:44389'
+
+2) Write All Services -> private baseApiUrl = environment.baseApiUrl;
+
+
+
+--------------------------------------- Diployment Server --------------------------
+1) Right Click Project go to "publish" and 
+   *select "Azure" 
+   *Click on "Azure App Service (Windows") and Click "Create your azure Account"
+   * After Sign in Browser Click Checkbox "I Agree to the" and 	NEXT Button
+   * Fill in Card Details and Next "Signup" Succefully Signed to Azure Account
+   *Go to Visual Studio 2022 and Click on SignIn
+   * "App Services instances" click on + button and fill like project Name
+   *Click Skip AI Mnagement Portal and Click Next Button and "PUBLISH"
+
+   *SQL Service Database -> Click on "Configure"
+   *Select "Azure SQL Database" and Next Click On "+" Button
+    * DATABASE Name as Application.json "StudentAdminPortalDb" fill the fileds "CREATE" Button
+    *Configure Azure SQL Database Name "StudentAdminPortalDb" and Copy "ConectionString Code" and Click On "Azure App Settings" and "NEXT" Button
+    *Summary of Changes "Checkbox" all "FINISH" Button;
+    ** Click on "Publish" Button Visual Studio Top
+    ** Right Click on "Resourses" Folder "Publish"
+    ** Click on "More Actions" Button Visual Studio Top click on "Edit" Click on Checkbox "UseConnectionStrings" Click on "EntityFramework" Click "Checkbox" SAVE Button After "PUBLISH" Top Visual Studio
+    * Cpy tyhe URL and Look in Browser
+
+   *Open SQR Database Server Name "url"
+     *Authentication -> "SQL Server Authentication" -> Login & Password and Click on "Connect" and "Sign" Open "StudentAdminDb" Only "Genders" Code Paste because "Male and Female" Dropdown Show in UI; Remaining DATA Is Empty;
+    *Success
+
+
+   -------------------------------------------- Angular Diployment Firebase ---------------------------------------------
+
+    1) Go to Firebase.com Go to Console "Add Project"
+     * Name "StudentAdminProfileUI" Click on Continue and Select "Default Account" 
+     * Click on </>Web "StudentAdminProfileUI" Register App Copy Code Continue
+     * Go to "Hosting" Sidemenu Get Started and Install CLI in Angular Project 
+     *Click on "Y" and "Hosting: Configure" and "Use an Existing project" select "studentadminportalui"
+     *public directory "dist" click on index.html- > "Y" github- >"N"
+
+     *Go to Angular Project "angular.json" "outputPath" : "dist"
+     *Go to "environment.prod.ts" -> baseApiUrl : "https://studentadminportal.wen.net" -> backend url
+     *Build Angular Application Command -> ng build --prod
+     *** Go to Firebase Copy "firebase diploy"  go to angular application command -> paste
+     *Copy URL Look in Browser
+      
+     1) Issue is Angular Console "CORS ISSUE"
+
+
+     ***** Go to Azure.com "AppServices"  click on "Project" Scroll Down "API" Section Click on "CORS" "Enable" Checkbox and paste Firebase Frontend URL -> https://steyevvgbx.web.app Click on SAVE
+
+      Console.log CORS Error has Gone---------------------- USE Application
+
+
+
+
+
+
+
+
+
