@@ -1,0 +1,151 @@
+
+static constructor ()  -> Call First after main Method Call, No Paramitarized, No Overloading
+
+Static Constructor vs Non Constructor:
+ 
+1) Static Constructors "Exucuted Immidetly" by Initiolized by only with "static" variables,fields. (Can't Paramitarized Constructor and Can't Overloaded Constructor) 
+          => static void Main(); {Console.ReadLine()}
+
+
+2) Non Constructor by "Call Instance of Class Created", Initiolized by only variables,fields. (Paramitarized Constructor, and Overloded Constructor)
+
+
+////////////////// Variables  ///////////////////////////
+
+////////////////// Constructors ///////////////////////////
+
+///////////////////////////////////// Access Specifiers ////////////////////////////////////////////////////
+1) public Access "Anywhere" and Access "Outside Other The Project and "Outside Other The Project "Inheritance""
+2) private Only Access in "Class"
+3) protected => Only Access in "Inheritance" but In Case "Reference" Project its also Access "Inheritance"
+4)internal => internal Access "Anywhere in Project"
+5)protected internal => protected internal Access "Anywhere" and Access "Outside Other The Project"
+
+///////////////////// Inheritance //////////////////
+
+A) Parent Class or Base Class or Super Class
+B) Child Class or Derived Class or Sub Class
+
+* Parent Class Must be Declare Public Constructor
+* Child Class Access Parent Class Properties, but Parent Class Can't be Access Child Classs Properties
+* Set Value to Parent Class Constructor Must Use base keyword => : base(99)
+
+
+///////////////////// Method OverLoading ////////////////////
+Polimoriphism : Behaving based Input Methods
+Example :- 
+public void Test();
+public void Test(int i);
+public void Test(string name);
+public void Test(int i, string name);
+public void Test(string name, int i);
+
+/////////////////// Method OverRiding //////////////////////
+
+Parent Class : "virtual" keyword Overridable to Child Class Permition
+ =>  public virtual void Test(){ // Overridable or Permition to Child
+            Console.WriteLine("Im Parent Test Method Called");
+        }
+
+Child Class : "override" keyword for Changing or Re Implementing in Child Class
+ => public override void Test() { // Overriding or Re Implementing
+            Console.WriteLine("Child's Test Method Is Called");  // Output : Child's Test Method Is Called
+        }
+
+
+//////////////////////////////////////////////////////////////////// Operator OverLoading ////////////////////////////////////////////////////////////////////////////
+
+
+
+/////////////////////////////////////////////////////////////////// Abstract Class /////////////////////////////////////////////////////////////////////////////////
+
+*In Abstract Class to Define a Method must start with "abstract" keyword
+Parent Class : "abstract" keyword Compulsary Override is Must*
+ =>  public abstract void Test(); Only Declaration, No Body{}
+
+Child Class : Implementing in Child Class Must*
+ => public override void Test() { // Mandatory Override
+     // Implementation  is Must*        
+   }
+
+//////////////////////////////////////////////////////////////////// Interfaces /////////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////// Structures ////////////////////////////////////
+
+1) Variables Right Click Add "New Item" Select "Code File" and Create Structure Name
+
+
+
+/////////////////////////////////////////////////////////// Enums ///////////////////////////////////////////
+
+ Learn More -> ???
+
+////////////////////////////////////////////////////////// Properties ///////////////////////////////////////
+
+*Note In RealTime Dont use "public" method for properties
+* get {return property;} // Getters
+* set {property = property;} // Setters
+
+
+
+1) What is Multithreading :- it process of executing multiple threads simultaneously.(ఏకకాలంలో.)
+
+2) What is Enumarable :- It is used to iterate the elements of a collection, array or list.
+
+3) What is Delegates :- Delegate is a reference to the method. It works like function pointer
+
+4) What is Structs :- Classes and Structs are blueprints that are used to create instance of a class.
+
+5) What is Collections :- Collection classes are specialized classes for data storage and retrieval. 
+   -These classes provide support for stacks, queues, lists, and hash tables.
+
+4) Generic is a class which allows the user to define classes and methods with the placeholder.
+
+5) What is Caching :- Caching to improve the performance of the application. Caching means to store something in memory
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
