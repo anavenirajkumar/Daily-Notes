@@ -1,0 +1,244 @@
+const employees = [
+    {
+        "code": "CT7207",
+        "salary": 40000,
+        "id": 1007,
+        "job": "Manager",
+        "department": "Operations",
+        "name": "Bently Smith",
+        "hobbies": ["Sports", "Reading", "Painting"]
+    },
+    {
+        "code": "CT7210",
+        "salary": 80000,
+        "id": 1010,
+        "job": "Director",
+        "department": "Operations",
+        "name": "Isla Morris",
+        "hobbies": ["Sports", "Reading"]
+    },
+    {
+        "code": "CT7202",
+        "salary": 15000,
+        "id": 1002,
+        "job": "Salesman",
+        "department": "Sales",
+        "name": "Allen Green",
+        "hobbies": ["Sports", "Painting"]
+    },
+    {
+        "code": "CT7208",
+        "salary": 60000,
+        "id": 1008,
+        "job": "Analyst",
+        "department": "Research",
+        "name": "Xavier Campbell",
+        "hobbies": ["Reading", "Painting"]
+    },
+    {
+        "code": "CT7209",
+        "salary": 50000,
+        "id": 1009,
+        "job": "Analyst",
+        "department": "Research",
+        "name": "Ethan Kumar",
+        "hobbies": ["Crafting", "Painting"]
+    },
+    {
+        "code": "CT7201",
+        "salary": 20000,
+        "id": 1001,
+        "job": "Clerk",
+        "department": "Accounting",
+        "name": "John Marshal",
+        "hobbies": ["Singing", "Painting"]
+    },
+    {
+        "code": "CT7205",
+        "salary": 15000,
+        "id": 1005,
+        "job": "Salesman",
+        "department": "Sales",
+        "name": "Ethan Almaas",
+        "hobbies": ["Singing", "Dancing"]
+    },
+    {
+        "code": "CT7211",
+        "salary": 15000,
+        "id": 1011,
+        "job": "Salesman",
+        "department": "Sales",
+        "name": "Natalie Robinson",
+        "hobbies": ["Writing"]
+    },
+    {
+        "code": "CT7212",
+        "salary": 15000,
+        "id": 1012,
+        "job": "Salesman",
+        "department": "Sales",
+        "name": "Earl Rose",
+        "hobbies": ["Singing", "Sports"]
+    },
+    {
+        "code": "CT7206",
+        "salary": 20000,
+        "id": 1006,
+        "job": "Clerk",
+        "department": "Accounting",
+        "name": "Ilija Seifert",
+        "hobbies": ["Singing", "Cooking"]
+    },
+    {
+        "code": "CT7204",
+        "salary": 20000,
+        "id": 1004,
+        "job": "Clerk",
+        "department": "Accounting",
+        "name": "Annette Burke",
+        "hobbies": ["Reading", "Teaching"]
+    },
+    {
+        "code": "CT7203",
+        "salary": 15000,
+        "id": 1003,
+        "job": "Salesman",
+        "department": "Sales",
+        "name": "Fernando Gordon",
+        "hobbies": []
+    },
+    {
+        "code": "CT7213",
+        "salary": 15000,
+        "id": 1013,
+        "job": "Salesman",
+        "department": "Sales",
+        "name": "Catherine Foster",
+        "hobbies": []
+    }
+];
+
+// get employee with id 1003
+let result = employees.find(i => i.id === 1003);
+console.log('get employee with id 1003:', result);
+
+// get index of an employee having id 1008
+result = employees.findIndex(i => i.id === 1008);
+console.log('get index of an employee having id 1008:', result);
+
+// get salesman employees
+result = employees.filter(i => i.job === 'Salesman');
+console.log('get salesman employees:', result);
+
+// get employees having salary greater than 40K
+result = employees.filter(i => i.salary > 40000);
+console.log('get employees having salary greater than 40K:', result);
+
+// get number of employees having salary greater than 50K and from research department
+result = employees.filter(i => i.salary > 50000 && i.department === 'Research');
+console.log('get employees having salary greater than 50K and from research department:', result);
+
+// get only name and salary of all employees
+result = employees.map(i => ({ name: i.name, salary: i.salary }));
+console.log('get only name and salary of all employees:', result);
+
+// get only name, job and annual salary of all employees
+result = employees.map(i => ({ name: i.name, job: i.job, annual: i.salary * 12 }));
+console.log('get only name, job and annual salary of all employees:', result);
+
+// get only first name and last name of all employees
+result = employees.map(i => {
+    const names = i.name.split(' ');
+    return { firstName: names[0], lastName: names[1] };
+});
+console.log('get only first name and last name of all employees:', result);
+
+// get name and salary of employees having salary greater than 10K but less than 20K ordered by name
+result = employees
+    .filter(i => i.salary > 10000 && i.salary < 20000)
+    .map(i => ({ name: i.name, salary: i.salary }))
+    .sort((emp1, emp2) => {
+        const name1 = emp1.name.toLowerCase();
+        const name2 = emp2.name.toLowerCase();
+
+        if (name1 < name2) {
+            return -1;
+        } else if (name1 > name2)
+            return 1;
+        else return 0;
+    });
+console.log('get name and salary of employees having salary greater than 10K but less than 20K ordered by name:', result);
+
+// return true if all employees having salary greater than 10K
+// result = employees.filter(i => i.salary > 10000).length === employees.length;
+result = employees.every(i => i.salary > 10000);
+console.log('return true if all employees having salary greater than 10K:', result);
+
+// return true if any employee is having salary greater than 60K
+// result = employees.filter(i => i.salary > 60000).length > 0;
+result = employees.some(i => i.salary > 60000);
+console.log('return true if any employee is having salary greater than 60K:', result);
+
+// get employees whose hobby is Reading
+// result = employees.filter(i => i.hobbies.filter(hobby => hobby === 'Reading').length);
+result = employees.filter(i => i.hobbies.some(hobby => hobby === 'Reading'));
+console.log('get employees whose hobby is Reading:', result);
+
+// get sum of all salaries
+result = employees.map(i => i.salary).reduce((accumulator, currentValue) => currentValue + accumulator, 0);
+console.log('get sum of all salaries:', result);
+
+// get average of salary of employees
+result = employees.map(i => i.salary).reduce((accumulator, currentValue) => currentValue + accumulator) / employees.length;
+console.log('get average of salary of employees:', result);
+
+// get max salary
+result = Math.max(...employees.map(i => i.salary));
+console.log('get max salary:', result);
+
+// get min salary
+result = Math.min(...employees.map(i => i.salary));
+console.log('get min salary:', result);
+
+// get all distinct job names
+result = Array.from(new Set(employees.map(i => i.job)));
+console.log('get all distinct job names:', result);
+
+// get distinct hobbies
+// result = Array.from(new Set(employees.map(i => i.hobbies).flat()));
+result = Array.from(new Set(employees.flatMap(i => i.hobbies)));
+console.log('get distinct hobbies:', result);
+
+// get employee name and likes (hobbies). 
+// The likes is a string as "Like hobby1/hobby2/hobby3". The likes will be created from hobbies array
+result = employees.map(i => ({ name: i.name, likes: 'Likes ' + i.hobbies.join('/') }));
+console.log('get employee name and likes:', result);
+
+// remove employee having id 1010
+const employeeIndex = employees.findIndex(i => i.id === 1010);
+result = employees.splice(employeeIndex, 1);
+console.log('remove employee having id 1010:', result);
+
+// get sum of salary department wise
+result = Array
+    .from(new Set(employees.map(i => i.department)))
+    .map(department => ({
+        department,
+        salary: employees
+            .filter(i => i.department === department)
+            .map(i => i.salary)
+            .reduce((accumulator, currentValue) => currentValue + accumulator, 0)
+    }));
+console.log('get sum of salary department wise:', result);
+
+// get employees name and code whose name starts with alphabet "e" (case insensitive)
+result = employees.filter(i => i.name.toLowerCase().startsWith('e'));
+console.log('get employees name and code whose name starts with alphabet "e":', result);
+
+// get employees name and code whose name ends with alphabet "n" (case insensitive)
+result = employees.filter(i => i.name.toLowerCase().endsWith('n'));
+console.log('get employees name and code whose name ends with alphabet "n":', result);
+
+// get employees name and code whose name have "tly"
+result = employees.filter(i => i.name.toLowerCase().search('tly') !== -1);
+console.log('get employees name and code whose name have "tly":', result);
