@@ -1,0 +1,482 @@
+
+JavaScript 
+------------
+
+1) Closers (Scope Chain)
+-------------------------
+* Closers ante oka function lo define chesina variable's a function run chesina tharvatha, a function loni variable's bayata use chesukogaligithe daanine "Closers" antaru.
+* "InnerFunction()" anedi "OuterFunction() Yokka "Variables's" ni gani "parameters" ni gani leda "function" ni Access cheyagaligithe daanine "Closers" antaru.
+
+ex:- 
+    // Global  Execution Context
+    let x = 10;
+ 
+    function foo(){
+      // Execution Context "foo" 
+      let y = 15;
+
+      function() bar(){
+       // Execution Context "bar"
+         let z = 20;
+         let result = x + y + z;
+         return result;
+       }
+      return bar; // -> bar function defination mottam vastundi.
+    }
+
+console.log(foo());
+
+let result = foo();
+console.log(result.bar());
+
+
+2) IIFE (Immedately Involked Function Expression) ()
+-----------------------------------------------------
+* IIFE ane Appudythe Manam Function ni declare chestamo appude Execution Avuthundi.
+* "()" symbols before function and after function with arguments
+ex:- 
+      var sum = ( function add(num1, num2){
+         var result = num1 + num2;
+         return result;
+      }) (6,5);
+      console.log(sum);
+
+3) Hoisting
+-------------
+* variables declare cheyakamundu print cheste (or) call cheste daanine "Hoisting" antaru.
+* only "var" ane "datatype" ni use cheste access avuthundi but "Value" Anedi "undefined" ani vastundi.
+
+
+4) Call Back Functions
+----------------------
+* call back function is a function that is passing as an argument to another function.
+* "function lo function" pampi function call ina tharvatha "pampina function" ni call cheyadam.
+
+function a(bfunction){ // b function is came
+    console.log(bfunction); // we get b function defination => [Function: b]
+    bfunction();
+    console.log("a function");
+}
+function b(){
+    console.log("b function");
+}
+a(b);
+
+OutPut
+---------
+[Function: b]
+b function
+a function
+
+
+Example 2
+-----------
+ function add(a,b){
+   console.log(a+b);
+ }
+ 
+ function product(a, b){
+   console.log(a*b);
+ }
+
+ function calculator(val1, val2, operation){
+   operation(val1, val2)
+ }
+
+ calculator(4,5, product)
+ calculator(4,5,add)
+
+ OutPuts
+-------
+ 20
+ 9
+
+5) Callback Hell
+-----------------
+* oka function ni execute chesinappudu a function lo multiple functions unnappudu  a function structure anedi "peramid" shape laga maruthundi. "disadvantage" is code relability peruguthundi. then we are going to "Promises" Concept
+
+5) defer keyword attribute
+--------------------------
+* "defer" keyword ni enduku use chestamante "server" nundi data thestunappudu "html" page ni wait cheyakunda on the spot user ki design "show" cheyadaaniki use chestam, endukante server nundi data thisukuravadaaniki time paduthundi kaabatti.
+* "html" page complete ga load ina tharvatha "script" anedi execution avuthundi.
+
+6) Recursions
+--------------
+* oka "function" lopala ade function ni call cheyadame "Recursion" and Function "Reausability"
+* "Recursion" lo Termination is Mandatory -> like if, else
+
+7) Ternary Operator
+--------------------
+ex:- condition ? true : false;
+    
+     let a = 9;
+     let b = 8;
+     let big = a > b ? a : b;
+     console.log(big);
+
+*Note if, else ni vaadithe code length peruguthundi. so anduke "ternary operators" ni use chestam.
+
+8) Anonymus Function
+----------------------
+* function alaanti name evvakunda call cheste daanine "Anonymus Function".
+ex:- 
+     let sum = function(num1m, num2){
+        let result = num1 + num2;
+        return result;
+     }
+     console.log(sum(4,5)) 
+
+* "function expression" ante oka function ni oka variable ki Assign cheyadaanne "Function Expression";
+
+9) Arrow Functions
+-------------------
+* ex:1:-  let product = (a,b) => {
+            let result = a + b;
+            return result; 
+          }
+         let printResult = product(4,5)
+         console.log(printResult);
+
+* ex:2:-  let abc = (a,b) => a + b //-> return this function without "return" keyword
+          let printAbc = abc(5,5)
+          console.log(printAbc);
+         
+
+10) Scopes, Block Scopes
+
+scope
+-----   function abc() { // scope start
+           let abc = 10;
+           console.log(abc);                 
+        } // scope end
+
+block scope
+-----------
+* "var" ane datatype tho declare cheste it can access anywhere. but "let", "const" not supported.
+          
+ ex:-  {  var abcd = 100; }
+       console.log(abcd) // 100;
+
+11) Default Parameters
+-----------------------
+ex:-  function abc(a, b = 10){
+            console.log(a+b);
+      }
+     abc(5)
+
+12) Rest Parameters
+---------------------
+* "Rest Parameters" ante oka function argument lo "abc(1,2,3,4,5,6,7,8) este appudu function lo "...arr" declare cheste echina "arguments" anni "array" lo store avuthae.
+
+ex:- function abc(a,b,...array){
+        console.log(array); // [1,1]
+       let result = a + b;
+       for(let item in array){
+          result = result + item;
+       }
+       console.log(result);
+     }
+
+    abc(1,1,1,1)
+
+13) forEach()
+--------------
+* "Array" lo unna prathi "element" print cheyadaniki use chestam.
+let names = ["a", "b", "c", "d"];
+
+// example 1
+names.forEach((ele, index, arr) => {
+    console.log(ele);
+})
+
+//example 2
+names.forEach(name) // calling function with each "element"
+function name(a,b,c){
+  console.log(a);
+}
+
+13) map()
+----------
+* "map()" function anedi "Original" array nu "Modified" chesi kotha array ni create chestundi. 
+
+example:-
+let names = [1,2,3,4,5];
+// example 1
+let modifiedNumbers = names.map((ele, index, arr) => {
+    console.log(ele);
+    return ele + 1; //  each element ni array lo store chestundi
+})
+ console.log("modifiedNumbers", modifiedNumbers); //modifiedNumbers [ 2, 3, 4, 5, 6 ]
+
+//example 2  
+let numbersModified = names.map(name) // calling function with each "element"
+function name(a,b,c){
+      return a + 2;
+}
+console.log("numbersModified", numbersModified) // numbersModified [ 3, 4, 5, 6, 7 ]
+
+14) filter()
+-------------
+* "filter()" function anedi kotha "Array" ni create chestundi. alaage array unna elements ni condition batti filter cheyadam.
+
+15) reduce()
+-------------
+* "reduce()" function anedi "initialValue" (or) "accumulator" thisukuntundi leda "default" array loni "first" element ni thisukuntundi.
+ex:-
+
+let numbers = [1,2,3,4,5];
+
+// example 1
+let modifiedNumbers = numbers.reduce((previousElement,currentElement, index, arr) => {
+    return previousElement + currentElement;
+})
+ console.log("modifiedNumbers", modifiedNumbers);
+
+//example 2
+let numbersModified = numbers.reduce(name) // calling function with each "element"
+function name(previousEle,currentEle,index,arr){
+      return previousEle + currentEle;
+}
+console.log("numbersModified", numbersModified)
+
+
+16) Optional Chaining "?"
+-------------------------
+* "Optional Chaining" appudu use chestamante "Object", or "Array Object" lo nested objects unte okavela "value" unte chupinchimani lekapothe chupinchakudadani.
+
+ex:- let employee = {
+                      name : "Rajkumar",
+                        address : {
+                           city : "Karimnagar"                        
+                        }
+                   } 
+ console.log(employee.address?.city)  // => ?
+
+17) Memorization 
+------------------
+* "Memorization" ante "Guthupettukovadam" and Time Saving.
+
+ex:- 
+   let previousResults = {}
+     function sum(a){
+        if(a in previousResults){
+            console.log("Key & Value", previousResults)     // Key & Value { '1': 1 }
+            console.log("previousResults[a]", previousResults[a]) // previousResults[a] 1
+          return previousResults[a];
+        } else {
+           let res = 0;
+           for(i=1; i<=a; i++){
+            res+= i;
+           }
+          previousResults[a] = res;
+          return res;
+        }
+     }
+ 
+    console.time();
+    console.log("started"); // started
+    console.log("RESULT =>", sum(1)); // RESULT => 1
+    console.timeEnd();  // default: 5.612ms => First Time Taking Time
+    console.time(); 
+    console.log("started"); // // started
+    console.log("RESULT =>", sum(1)); // RESULT => 1
+    console.timeEnd();  // default: 4.599ms  => Second Time Talking Time
+
+
+18) DOM Objects
+-----------------
+* "document.getElementById("idName") -> id match ina "element" return chestundi "js".
+* "document.getElementsByClassName("className") -> className match ina prathi "element" ni return chestundi.
+* "document.getElementsByTagName("tagName") -> tagName match ina prathi "element" ni return chestundi.
+* "document.querySelector(".className/#IdName/tagName") -> ".abc or #abc, <p>" tho match ina single first "element" ni return chestundi.
+* "document.querySelectorAll(".className/#IdName/tagName") -> ".abc or #abc, <p>" tho match ina prathi "element" ni return chestundi.
+
+19) Debouncing and Throttling
+------------------------------
+Debouncing
+----------
+* Debouncing ante "server" mida requests load padakunda website Performance Improve cheyadaniki use chestam.
+example:- "Flipkart" search bar lo adyna "keyword" enter cheste every "keyword" server ku vellakunda konni seconds tharvatha user search chesina "keywords" batti okesari server ku request velthundi.
+
+Throttling
+-----------
+* Throttling ante konni seconds tharvatha server ki requests pampadam.
+example:- "Flipkart" website lo "scroll down" chesinappudu "konni" seconds tharvatha more products ni chupinchadam.
+
+
+20) Generators
+----------------
+* star "*" sybmol tho function define cheste adi Generator function antaru.
+* "yield" keyword anedi generation function ni "pause" cheyadaniki leda "start" cheyadaniki use chestam.
+* it returns a Generator object.
+
+ example:-   function* foo(index) {
+                while (index < 2) {
+                   yield index; 
+                   index++;
+               }
+             }
+           const iterator = foo(0);
+           console.log(iterator.next()); // expected output: 0
+           console.log(iterator.next().value);// expected output: 1
+           
+
+
+20) Math Objects
+-----------------
+
+sqrt()
+------
+console.log(sqrt(64)) // -> 8
+
+min()
+------
+let array = [1,2,3,4,5];
+console.log(Math.min(...array)) // -> 1
+
+max()
+------
+let array = [1,2,3,4,5];
+console.log(Math.max(...array)) // -> 5
+
+round()
+--------
+console.log(Math.round(5.7)) // -> 5.7 anedi 6 number ku daggara undi
+
+round()
+--------
+console.log(Math.round(5.7)) // -> 5.7 anedi 6 number ku daggara undi
+
+ceil()
+--------
+console.log(Math.ceil(5.7)) // -> 5.7 anedi 5 kante pedda number ni estundi ante "6" ni estundi. 
+
+floor()
+--------
+console.log(Math.floor(66.98)) // -> 66 number ne estundi ante same "value"
+
+trunc()
+-------
+console.log(Math.trunc(75.98)) // -> 75 number ne estundi ante same "value"
+
+rondom()
+--------
+console.log(Math.rondom()) // rondom ane method 0 - 1 lope ante -> 0.94873286714 ante 1 return cheyadu but "ONE" lopu rondom numbers ni generate chestundi.
+console.log(Math.rondom() * 10) // -> 2.498374837847348
+console.log(Math.floor(Math.rondom() * 10)) // -> generating rondom numbers only -> 1,2,3,4,5,6,7,8,9. applying floor method doe's not showing 0.99 decimal numbers
+
+
+
+21) Window Open
+----------------
+
+Window.open()
+--------------
+Syntax : Window.open(URL, name/target, specifications); // names => _blank - open new tab, _self - samepage lo enko page ni open cheyadam, _parent, _top , specifications -> width, height, left, top, resizable, scrolling
+ 
+example :- 
+
+<button onclick="openNewWindow()"> </button>
+<button onclick="moveWindow()"> </button>
+<button onclick="resizeWindow()"> </button>
+<button onclick="resizeByWindow()"> </button>
+
+<script>
+
+let ref;
+  function openNewWindow(){
+     window.open(); // example 1 open a new window
+     window.open("","", "width=400px, height=500px,left=100px, top=200px"); // example 2 applying new window Open styles
+     window.open("learning.html","", "width=400px, height=500px,left=100px, top=200px"); // example 3 Passing a Page and applying new window Open styles
+     window.open("learning.html","_self", "width=400px, height=500px,left=100px, top=200px"); // example 4 Passing a Page and Self and applying new window Open styles
+     window.open("https://www.google.co.in","_blank", "width=400px, height=500px,left=100px, top=200px"); // example 5 Passing a URL and _blank and applying new window Open styles
+}
+
+ function moveWindow(){
+      ref = window.open("https://www.google.co.in","_blank", "width=400px, height=500px,left=100px, top=200px"); // example 5 Passing a URL and _blank and applying new window Open styles
+      // ref.moveTo(800,100)  // window style pixels
+      ref.moveBy(800,100)  // window style pixels
+  }
+
+ function resizeWindow()(){
+      ref.resizeTo(200,100)  // window style pixels
+  }
+
+
+function resizeByWindow(){
+      ref.resizeBy(800,400)  // window style pixels
+  }
+
+</script>
+
+
+MoveWindow()
+--------------
+
+<button onclick="moveWindow()"> </button>
+
+<script>
+  function moveWindow(){
+      let ref = window.open("https://www.google.co.in","_blank", "width=400px, height=500px,left=100px, top=200px"); // example 5 Passing a URL and _blank and applying new window Open styles
+      // ref.moveTo(800,100)  // window style pixels
+      ref.moveBy(800,100)  // window style pixels
+  }
+</script>
+
+ResizeWindow()
+--------------
+<button onclick="resizeWindow()"> </button>
+
+<script>
+  function resizeWindow()(){
+      ref.resizeTo(200,100)  // window style pixels
+  }
+</script>
+
+
+22) Pure and Impure functions
+------------------------------
+
+Pure Function
+--------------
+* "Pure function" ante oka function anedi migatha functions ni and outside variables modified cheyakapothe appudu Daanini "Pure" Function ani anataru.
+* "Predictable" ante oka function ki same arguments echi same output este Daanini "Predictable" antaru.
+
+Impure function
+----------------
+* "Impure function" ante oka function ki arguments pampi a function lopala prathisaari amyna modified cheste Daanine "Impure function" antaru. and Aslo console.log("every time i'm calling im also Impure function")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

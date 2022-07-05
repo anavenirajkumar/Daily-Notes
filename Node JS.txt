@@ -1,0 +1,11 @@
+
+Node JS
+--------
+FS Module
+----------
+* "fs" module tho manam "Files" Create, Read, Update, Delete Cheyachu
+* fs module "CRUD" functions "WriteFile", "ReadFile", AppendFile", "UnLinkFile"
+
+* Create Folder Use "mkdir"
+* Delete Folder Use "rmdir"
+* ReadFolders in Folder Use "reddir"

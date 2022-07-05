@@ -1,0 +1,532 @@
+
+Angular Notes
+-----------------
+1) Angular CLI
+------------------
+       ng new <project_name>
+
+        ng generate component <component_name>
+        ng generate module <module_name>
+        ng generate pipe <pipe_name>
+        ng generate directive 
+
+ - providers 
+        - services that we need will be injected here 
+    
+ - Bootstrap 
+        - what is the first component, the module should load 
+
+ - exports   
+        - is to export and expose the component outside of the module  
+
+2) Components
+--------------
+* ng g c <component-name>
+
+  Every component has 4 files auto-generated with it 
+    - component.html -> view or html or template file -> UI 
+    - component.ts -> it will be a class file which will have methods -> Logic 
+    - component.spec.ts -> It will have the unit test script for component 
+    - component.scss -> stylesheet of the component 
+
+ selector -> unique identifier for the component
+        -> id of the component 
+        -> using this selector we will use the component  
+ templateUrl -> your HTML code 
+        - component.html file 
+ styleURLS -> for linking your component stylesheet 
+        - component.scss 
+
+3) Decorators
+----------------
+* Whenever you see a @ symbol - it's a decorator
+
+@Input Decorator
+----------------
+* Parent Component lo vunna Data nu Child Component Receive Chesukovadaniki use Chestam.
+
+ex:-  <app-child [fromParent]="variableName"></app-child>
+
+      @Input('fromParent') public variableName ; (OR) @Input public  fromParent;
+
+
+@Output Decorator
+-----------------
+* Child Component lo vunna Data nu Parent Component ki Pampivvadaniki use Chestam.
+ex:- @Output() public childInfo = new EventEmitter();
+     
+     public clickEvent(){ // -> write function in html
+       this.childInfo.emit("varibleName or ObjectVariableName")
+     } 
+
+  <app-child (childInfo)="declareParentVariableName"=$event"> </app-child>
+
+
+4) Directives
+----------------
+ Structural Directives
+        ngIf
+        ngFor
+        ngSwitch
+
+        - ngIf -> done
+        -> logical opeartors 
+            OR (||)
+            AND (&&)
+            NOT (!)
+    - ngIf else -> 
+    - ngIf then else 
+
+ * means its a built in Structrual directive 
+    E.g ngIf 
+    <div *ngIf="<condition>"> Value 1</div> 
+
+Attribute Directives
+---------------------
+* Attribute Directives like Custom Derective Creation "Name","ngStyle","ngClass".
+
+ngStyle
+--------
+    ex1:- <div [ngStyle]="{'background-color':'green', 'color':'#fff'}">  inline style
+    ex2:- <div [ngStyle]="{'background-color': variableABC}"> this is dynamaic color -> public variableABC = "blue";
+    ex3:- <div [ngStyle]="{'color': txtColor === 'blue' ? 'blue' : 'green'}">  ->  public txtColor = "blue";
+
+ngClass
+-------
+ * we can pass strings, array values, objects
+
+   ex1:- <div [ngClass]="'abc'">Single class</div> -> styles class .abc {backgrounf-color: blue;} 
+   
+   ex2:- <div [ngClass]="'abc efg'">Multiple classes</div> -> styles class  .abc {backgrounf-color: blue;}; .efg{backgrounf-color: green;} 
+
+   ex3:- <div [ngClass]="dynamicVariable">Dynamic Class</div> -> public dynamicVariable = "abc";  
+
+   ex4:- <div [ngClass]="conditionVariable === 'abc' ? 'abc' : 'efg'">condition Variable Class</div> -> public conditionVariable = "abc";  
+
+   ex5:- <div [ngClass]="{abc: true, efg : true}">Object Class</div>
+
+   ex6:- <div [ngClass]="getClassName();">Method Class</div> -> public getClassName() { return 'abc'}
+
+4) Event Binding
+------------------
+     We can call any event 
+    -> event is nothing but JavaScript events like 
+        -> onclick
+        -> onmouseover 
+        -> onfocus
+        -> onblur 
+   Syntax is 
+    <button (click)="method()"></button>
+
+
+5) Property Binding 
+---------------------
+*  We write the property in square brackets [propterty_name]="..."
+
+6) Pipes
+-----------
+Syntax is:-
+    <div> {{ <input_data> | <name_of_pipe> }} </div>
+
+    Built-In Pipes which are readily available for us to use 
+    lowercase 
+        -> saving usernames/email_address 
+            -> lowercase 
+    uppercase 
+        -> currency 
+        -> Airport Codes 
+    date 
+        -> by default Mon, dd, yyyy 
+    json 
+        -> I use this specially for debug purpose 
+        -> showing <code> 
+    currency
+        -> by default uses dollar symbol $
+    percent 
+        -> by Default is rounding to near by integer 
+        -> multiple by 100 and add % symbol 
+    - date 
+        'MMM-dd-yyyy'
+        'short'
+        'long'
+    - percent 
+        | percent : <minimumBeforeDecial>.<miniumDecialNumbers>-<maxDecimalNumbers>
+
+
+7) Parameterized Routings OR Dynamic Routes
+-----------------------------------------------
+    http://localhost.com/user/10 -> get the user with Id as 10 
+    http://localhost.com/search/ka/bangalore -> state and city 
+    http://localhost.com/user/10/photos/34 -> user id = 10 and photo id = 34 
+
+ 
+8) Template Driven forms
+-------------------------
+ * import FormsModule
+ * ngForm -> form name as template variable using "#" ex: #loginForm="ngForm" (ngSubmit)="loginUser(loginForm)"
+ * give in input field "ngModel"
+ * loginForm(loginForm:NgForm) {
+    console.log(loginForm);
+  }
+ * custom validations -> #email="ngForm"
+  
+9) Reactive Forms
+--------------------
+ * import ReactiveFormsModule
+ * define "FormGroup" directive 
+ * "formControlName" attrtibute
+ * [formGroup]="loginForm" (ngSubmit)="postData()"
+ * public loginForm : FormGroup | any;
+ * import "FormsBuilder" in Constructor
+ * public postData(){
+   console.log(this.loginForm);
+  }
+
+// setValue vs patchValue
+ * ngOnInit(){
+  this.loginForm.setValue({  //-> setValue => we can set values entire form; patchValue => we can set required field values set 
+    name : 'rajkumar',
+    email : 'rajkumar@gmail.com'
+  })
+ }
+
+// reset form
+this.loginForm.reset();
+
+// valueChanges()  when subscribe to the observable
+this.loginForm.get('email').valueChanges.subscribe(data => { // perticular field
+ console.log(data); we are tracking every keyword the user entered
+})
+
+this.loginForm.valueChanges.subscribe(data => { // entire form fields tracking
+ console.log(data); we are tracking every keyword the user entered
+})
+
+// statusChanges() => dynamically we can capture every field
+this.loginForm.get('email').statusChanges.subscribe(data => { // perticular field
+ console.log(data); we are tracking every keyword the user entered
+})
+
+// dynamically we can capture entire form fields
+this.loginForm.statusChanges.subscribe(data => { // entire form fields tracking
+ console.log(data); we are tracking every keyword the user entered
+})
+
+
+Form field valid Types
+----------------------
+valid -> true;
+invalid -> false;
+dirty -> true;
+pristine -> false;
+touched -> true;
+untouched -> false;
+pending -> false;
+
+// FormArray 
+ * Group of Multiple FormControls, FormGroups
+
+9) Services, Http Params, InterCeptors
+----------------------------------------
+
+10) Angular Unit Testing 2 Types
+---------------------------------
+* All out test scripts are writen in "Jasmine" framework
+* "Karma" ia a Test script Runner default port 9876
+
+   -- 1) Unit Testing (jasmine, karma) // => independent modules, services, components, pipes.
+         * we write our unit tests in jasmine framework
+         * we run our unit tests using karma framework
+   -- 2) End to End Testing (protractor) => // => when user is login from user profile, orders,...etc logout the application  -> protractor use for end to end testing
+         * E2E we use Protractor framework
+
+   ".spect.ts" -> spect.ts file we will use unit test script
+   "e2e" -> e2e folder use for end to end test scripts
+         - "e2e.spec.ts" all end 2 end scripts in side "e2e" folder
+
+ 
+ "karma" config file -> /src/karma.config.js
+ "protractor" config file -> /protractor.config.js
+
+ How to Add codeCoverage Report in "angular.json under the "test" add "codeCoverage": true,
+ 
+ Run Unit Test -> ng test
+               -> ng test --codeCoverage -> without adding codeCoverage in "angular.json"
+
+ Run Protractor -> ng e2e
+
+Jasmine Framework Concepts
+--------------------------
+
+* describe -> Gobal function describe of jasmine it takes two parameters
+    ex:-      describe("I want to Test Login Component", function(){  ---> describe
+                 // write Specs logics 
+                it("check login screen", func{ --------> specs
+                     // expect ------------> expect
+                    var tax = 10;
+                    //expect("<actual>").toBe(10);
+                    expect(tax).toBe(10); -> Asserting or Checking the value -> matcher
+                 } 
+                it("check login input elememts", func{
+                 }
+                it("check login button", func{
+                 }
+              }) 
+
+* specs
+* expect
+* matcher -> what is expect the value;
+
+1) import {async, ComponentFixture, TestBed} from '@angular/core/testing'; // 1 Step is Importing Classes and Interfaces
+2) import { wishMe } from "./str.operations";  // 2nd Step is Importing Components
+3) Write "describe" statements
+4) "Fixture" we can get properties of component class and template
+5) beforeEach - method -> setting up components, setting up data, importing services  etc...
+6) TestBed -> main utility to define our module, components, etc...
+
+------- AAA Pattern in Angular -----------
+-> Arrange -> Act -> Assert
+* Arrange -> "arrange" everything like setup ground work for working with tests for execution
+    ex:- Create a Object pf Component etc
+* Act -> "act" on your unit test case, calling methods, procesing data etc.
+* Assert -> Verify the actual data of test result and expected data.
+
+------ Angular TestBed (ATB) ----------
+* testbed will create a testing module which is required to produce the module envireonment for testing.
+
+
+11) AOT Compilation (A Head of Time Compilation ) ng build --prod
+------------------------------------------------------------------
+* Pre Compiled Code only Rendering in Browser.
+* AOT Compilation, Bundlings in whenever user build Production level that time is Total Bundling. ex:- we canno't see the source code and debugging
+* angular runs typescript, components but brower don't know typescript "AOT" is Converted typescript into Javascript or es6  That is of "AOT"
+ - faster rendering, 
+ - asynchronous requests, 
+ - detect remplate errors, 
+ - better security
+
+12) JIT (Just in Time) ng build
+--------------------------------
+ * JIT Compilation "Bundling and Rendering runs in Browser" and we can view the source code and debug the app.
+ * JIT Runs default until Angular 8 Version
+ * JIT was like you compile the code when it is asked directly in the browser at runtime.
+
+development environment vs production environment
+-------------------------------------------------
+* in "development environment" our app will be diploy to the server. and we can test the app and Bugs.
+* in "prosuction environment" we can diploy our app to the public server. 
+
+
+13) Ng Content  Projection
+---------------------------
+* we do content projection using <ng-content>
+* "ng content projection"is nothing but you can send the content to another component or it can be any component or any module. class level => select=".classname", attribute level => select ="[abcd]"
+* "ng contnent" projection ante content nu transfer cheyadam like any component ki, leda any module ki
+
+<app-component-html>
+
+  <app-ng-content-projection>
+    This Content is from the App Component to app-ng-content-projection Component
+   <p role>
+     This is a selected content for Roles
+   </p>
+  
+  </app-ng-content-projection>
+
+
+  <ng-template #admin>
+    This is for Admin Content
+  </ng-template>
+
+</app-component-html>
+
+<app-ng-content-projection-html>
+  <p>Angular Content Projection</p>
+  <ng-content></ng-content>
+  <ng-content select="[role]"></ng-content> 
+    <div *ngIf="adminTemplate">
+      <template [ngTemplateOutlet]="adminTemplate">
+           
+      </template>
+   </div>
+</app-ng-content-projection-html>
+
+<app-ng-content-projection-component.ts>
+  @ContentChild('admin')
+  adminTemplate : TemplateRef<any> | any;
+</app-ng-content-projection-component.ts>
+
+
+
+14) @ViewChild and @ContentChild
+--------------------------------
+* We Can Access the properties and functions.
+* return the first matching element
+* "viewChild" is basically used to get Single element at a time using "ngAfterViewInit()" lifecycle.
+* ViewChild decorator tho we can access child component properties, and we can set values based on certain conditions.
+* viewchild is a most used decorator
+* we can use @ViewChild to inject a reference to existing component or DOM Element.
+* viewchild gets loaded after ngAfterViewInit() Method
+* viewchild is a decorator used for manipulating/updating, get dom elements, we can set values based on certain conditions child component
+* same like => let ref = document.getElementById('btn'); ref?.click();
+* "@ContentChild" is almost same like "@ViewChild" by accessing ""ngAfterContentInit()" lifecycle 
+
+15) @ViewChildren and @ContentChildren 
+-------------------------------------
+* return all the matching elements like QueryList.
+* "ViewChildren" always returns all the elements as a QueryList by using "ngAfterViewInit()" lifecycle.
+* "@ContentChildren" is almost same like "@ViewChildren" but accesing "ngAfterContentInit()" lifecycle
+
+16) ng-temlate
+---------------
+* ng-template doe's not occupy the content space in DOM. and it can be accessing only "structrural directives".
+* ng-template, ng-container is accessing only custom directives, structural directives.
+* "ng-template" dwara oka place lo different, different Components, different, different html Designs ni Chupinchavachu.
+* ex:- oka dropdown "event" batti oka place lo different, different html design pages ni chupinchadam. like navbar, logos, html pages,etc...
+
+17) HostBinding and HostListener
+---------------------------------
+* HostBinding ante dynamic ga css colors apply cheyam.
+* HostListener ante button 'click' chesinappudu gani leda 'hover' chesinappudu gani dynamic button colors change cheyadam.
+
+18) Async Pipe
+---------------
+* Convert Object into String => {{ data | async}}
+
+19) Service Worker
+------------------
+* Service worker mostly use for "Progressive Web Applications".
+* it works only production and with "https".
+* without internet connection in App still Data is "Shows" data is Stored Service Worker.
+
+20) Rxjs (Reactive Programming for Javascript)
+-----------------------------------------------
+* "rxjs" provides multiple operators. like pipe, of, from, filter, first, subscribe, map
+* "subscribe()" provide different functionalities 
+     - like => next(), completed(), error()
+     ex:- subscribe({ next(x) => console.log(x); })
+
+21) View Encapsulation
+------------------------
+* A component H3 tag vundi B Component lo H3 tag nenu A Component ".css" file lo H3 Tag style Cheste adi Only A H3 tag ki matrame Apply Avuthundi. but B Component ki kuda Apply cheyalante "VewEncapsulation" use cheyali.
+ ex:- A Component
+      templateUrl : ['./users.component.html']
+      styleUrls : ['./users.component.css'],
+      encapsulation : ViewEncapsulation.None,  -> E Line Add cheste Mottam h3 anni vunna project lo mottaniki color apply avuthundi. 
+
+22) ViewContainerRef
+---------------------
+* Represents a container where one or more views can be attached to a component.
+* Oka A Component lo every second ki "ng-template" dwara oka place lo different, different Components output Html Pages Chupinchavachu using "ViewContainerRef";
+*   ఒక కాంపోనెంట్‌కు ఒకటి లేదా అంతకంటే ఎక్కువ వీక్షణలు జోడించబడే కంటైనర్‌ను సూచిస్తుంది.
+
+23) Dynamic Component Allocation (with condition)
+--------------------------------------------------
+* Dynamic Component Allocation ante User Click Chesina Button Condition Batti Same Page lo Different, Different Components "ng-container" lo show cheyadam.
+
+24) Change Detection Strategy
+------------------------------
+* Change Detection Strategy ante Adyna Oka Component lo amyna Changes, events click chesina ...etc Angular anedi Total Anni Components ni check chesukuntuvastundi.
+* "ChangeDetectionStrategy.Default" -> ante Adyna Changes Inappudu Root Component nundi Anni Components varaku Check chestundi. -> lot of Time Taking
+*** "ChangeDetectionStrategy.OnPush" -> use Cheste Adyna Component lo Changes Inappudu Only a "Perticular" Component tini matrame Check Chestundi. 
+
+ChangeDetectorRef Methods
+--------------------------
+* markForCheck() -> OnPush vadinappudu changes jariginappudu a changes ni check cheyadaniki use chestam
+* detach() -> detach anedi parent, child component ki velladu a perticular component varake stop avuthundu
+* detectChanges() -> by default amyna changes aumatic ga check chestundi.
+* reattach() ->  -> amyna changes inappudu migatha anni components ki effect load paduthundi. ante keep tracking.
+ 
+25) Angular LifeCycles
+----------------------
+* first "ngOnChanges()" method call Avuthundi. dinni appudu Use chestamante amyna values changes inappudu Previous Change Value ni Thelusukovadaniki, alage New Value ni Thelusukovadaniki use chestam. Edi Every time Values change inappudu Prathisari Call Avuthundi.
+* second "ngOnInit()" method call Avuthundi. -> Edi Okkasari matrame Call Avuthundi.
+* third "ngDoCheck()" method call Avuthundi. dinni Appudu Use Chestamante "Current Value" ni Thelusukovadaniki. -> Edi Prathisari Call Avuthundi value ni thelusukovadaniki.
+* fourth "ngAfterContentInit()" method call Avuthundi. ->  Edi Page Load Inappudu Okasari Matrame Call Avuthundi.
+* fifth "ngAfterContentChecked()" method call Avuthundi. -> Edi "click event", jarigina values changes inappudu Prathisari Call Avuthundi.
+* sixth "ngAfterViewInit()" method call Avuthundi. -> Edi Page Load Inappudu Okasari Matrame Call Avuthundi.
+* seventh "ngAfterViewChecked()" method call Avuthundi. -> Edi "click event", jarigina values changes inappudu Prathisari Call Avuthundi.
+* "ngOnDistroy()" ane method ni manaku avasaram leni components Remove cheyadaniki use chestam.
+
+26) Promises vs Observables
+----------------------------
+Promises
+----------
+* "Promises" are Async
+* "Promises" provide a single value at a time. exucute immediately when we created. 
+* "Promises" are not Cancellable, it does't provide any operators.
+
+Observables
+------------
+* "Observables" provide multiple values over a period time.
+* "Observables" provide multiple operators like forEach,filter,reduce,retry,retryWhen,delay...etc
+
+27) Multicasting Observable
+-----------------------------
+ex:- Oka "Youtube" Channel undi andulo oka rendu videos subcribers 10 mandi unnaru. tharvatha a youtube channel ki 100  Subscribers vacharu. appudu youtube nundi oka "video release" inadi appudu a video "110 mandiki" velthundi. but "100 mandiki" "first video","second video" velladu. this is a "Multicasting Observables"
+ *  alage values kuda e process lage panichestaE
+
+28) Subject and BehaviourSubject
+---------------------------------
+* "Subject" ante "Subject" nu "Subcribe" cheste adi "present" value nunde vastundi. not start from "0"
+* "BehaviourSubject" ante is almost same like "Multicasting Observable" but Edi "Previous" Value ni Gurthupettukuntundi.
+
+28) Angular Internationalization (i18n) (Multi Languages Translater)
+--------------------------------------------------------------------
+* install Process
+* npm install @ngx-translate/core --save
+* npm install @ngx-translate/http-loader --save
+
+** find it "console" and "network tab" -> http://localhost:4200/assets/i18n/te-Telugu.json
+
+simple example:- dropdown list lo english,hindi,telugu,spanish,germany,french elements Unnae. Select chesina Element "event" batti Content mottam a language loki transalte avuthundi. 
+
+29) ngNonBindable
+-----------------
+* "ngNonBindable" ante Dynamic Element "value" ni Bind cheyadu.
+* ex:- <p ngNonBindable> {{name}}</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
