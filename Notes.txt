@@ -1,0 +1,52 @@
+ Go to Tools -> NutGet Package Manager -> Package Manage Console
+  --> Command -> Add-Migration
+      Name : Initial migration
+      Name : Update-Database
+   *After Automatically Created "DATABASE" AND "Tables" 
+
+
+Create New Projects
+--------------------
+mkdir skinet
+cd skinet
+dotnet new sln
+dotnet new webapi -o API
+dotnet sln add API
+dotnet run
+dotnet dev-certs https
+dotnet dev-certs https -t
+dotnet run (or) Open with "SLN" 
+
+skinet -> dotnet new classlib -o Core
+
+skinet -> dotnet sln add Core
+
+skinet -> dotnet new classlib -o Infrastructure
+
+skinet -> dotnet sln add Infrastructure
+API -> dotnet add reference ../Infrastructure
+Infrastructure -> dotnet add reference ../Core
+skinnet -> dotnet restore
+
+
+
+Migrations:
+-----------
+
+skinet -> dotnet ef migrations add InitialCreate -p Infrastructure -s API -o Data/Migrations
+package manager console -> Update-Database
+
+
+
+
+Project Flow
+--------------
+
+Core -> Entities, Interfaces
+Infrastructure ->  Repository, Services, Migrations, DbContext
+
+
+
+
+
+dotnet ef migrations add InitialCreate -o Data/Migrations
