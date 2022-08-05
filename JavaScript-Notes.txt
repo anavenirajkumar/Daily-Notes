@@ -447,10 +447,41 @@ Impure function
 * "Impure function" ante oka function ki arguments pampi a function lopala prathisaari amyna modified cheste Daanine "Impure function" antaru. and Aslo console.log("every time i'm calling im also Impure function")
 
 
+23) Shallow Copy vs Deep Copy
+------------------------------
+
+Shallow Copy (if change both change)
+------------------------------------
+  let obj1 = {name : 'rajkumar', age : 24};
+  let obj2 = obj1;
+  obj2.name = "Anaveni Rajkumar"; // ekkada value change cheste rendu objects ki value assign avuthundi;
+  console.log(obj1.name); // Anaveni Rajkumar
+  console.log(obj2.name); // Anaveni Rajkumar
+
+Deep Copy (Never Change)
+------------------------
+  let obj1 = {name : 'rajkumar', age : 24};
+  let obj2 = Object.assign({}, obj1); or [...obj1]
+  obj2.name = "Anaveni Rajkumar"; // ekkada value change cheste rendu objects ki value assign avuthundi;
+  console.log(obj1.name); // rajkumar
+  console.log(obj2.name); // Anaveni Rajkumar
 
 
+24) Flatten Array
+------------------
+let arr = [1,2,3,4,5,6,7,8] // one dimential array
 
+let arr2 = [1,2,[1,2,3,4],3,4,5,6,7,8] // two dimential array
 
+let arr3 = [1,2,[1,2,3,[1,2,3,4,5]],3,4,5,6,7,8] // three dimential array
+
+// Convert Two Dimential Array into Single Dimential Array
+let result = arr2.flat(Infinity);
+console.log(result);
+
+// Convert Three Dimential Array into Single Dimential Array
+let resultTwo = arr3.flat(Infinity);
+console.log(resultTwo);
 
 
 

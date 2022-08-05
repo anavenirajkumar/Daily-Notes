@@ -1,0 +1,420 @@
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1) Classes
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+* every "class" by default "internal" modifier. without access modifier
+* every "method" by default "private" modifier. without access modifier
+* static Methods we can Call Direct
+* non static Methods we can Call using Object
+
+Methods
+----------
+1) Normal Method
+2) With Parameters Method
+3) With Return Method
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+2) Access Modifiers
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+*  public Access "Anywhere" and Access "Outside Other The Project and "Outside Other The Project "Inheritance""
+*  private Only Properties Access in " Same Class"
+*  protected => "Parent" Class Properties Access in "Child" Class. but In Case "Reference" Project its also Access "Inheritance"
+*  internal => "Parent" Class Properties Access Without Inherit "Anywhere in the Project" and but In Case "Reference" Project its also Access OutSide the Project but Not Access Properties and Cannot Set Properties
+*  protected internal => protected internal Classs Properties Access "Anywhere in the Project". and Access "Outside the Other The Project" using Inherit and call with base.Id = 101;
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+3) Static Constructor vs Non Constructor
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ * static constructor ()  -> Call First Static Constructor() after Main Method Call, "No Paramitarized, No Overloading" Constructor
+ * Static Constructors "Exucuted Immidetly" by Initiolized by only with "static" variables,fields. (Can't Paramitarized Constructor and Can't Overloaded Constructor)
+
+ * Non Constructor by Call using Create "Object" of the Class, Initiolized by only variables,fields. (Paramitarized Constructor, and Overloded Constructor)
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+4) Arrays -> Ram Memory = Variable, Heat Memory = Values
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+* Array is a class in C#
+* Array is Reference type
+* Array is Similar Datatype -> Only Accept Similar Datatype.
+* Array is not a Dynamic Length
+* Array is Not Accept "Multiple" Datatypes.
+* Array is type which can stores the multiple values
+* Arrays Size is Fixed
+* we can identity with index values
+
+
+* Array Drobacks  -> Overcome this problems in Collections
+   -> Similar Datatype
+   -> Fixed Size
+   -> Default Values
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+5) Collections
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+* We Can Store Group of Objects use for Collections.
+* We Can Store Group of Objects into Single Object use for Collections
+* Collections ni Use Chesukoni Gropu of Objects ni "Searching", "Sorting", and Manaki Nachchina Place lo Object ni Insert Chesukovachu and Modifications Chesukovachu and Manaki Nachchina Object ni kuda "Delete" Chesukovachu.
+* using.System.Collections
+* Collection is a type where it can access multiple DataTypes
+* Automatically Increment or Decrement Size
+
+List<> Interface
+----------------
+* List lo Duplicate "Values" Ni Store Chesukovachu.
+* We Can Print Order Wise.
+* We Can Access Any "Element" Using Index.
+* List is a Dynamic Length.
+* List lo Manaki Nachchina Place lo "Object" ni Insert Chesukovachu "Index" Use Chesukoni and "Remove" and "Modifications" Chesukovachu Index use Chesukoni.
+
+Stack<> Interface
+--------------
+* Stack is Follows "LIFO" Order. LIFO Ante Last Element First ku Vastundi First Element Anedi Last Move Avuthundi.
+
+* Stack is Supporting "Index" Position using "ElementAt" Method
+
+Example 1
+---------
+  Stack<int> stack = new Stack<int>();
+             stack.Push(1);
+             stack.Push(2);
+             stack.Push(3);
+
+     int top = stack.ElementAt(0); // Returns 3  -> LIFO Order Wise Index "0" is => 3
+     int next = stack.ElementAt(1); // Returns 2 -> LIFO Order Wise Index "0" is => 2
+
+Example 2
+---------
+--------------
+4 | 9 | 2 | 5 |
+--------------
+* First Nenu "4" Element ni Add Chesa, Thravatha 9,2,5 n Add Chesa.
+* Stack lo Okavela "Element" ni "Delete" Cheste Adi "5" Element" ni Matrame "Delete" Chestundi. ante Last Add Chesina Element ni Matrame Delete Chestundi.
+* Stack Size Anedi Increse, Decrease "Values" ni Batti Maruthundi.
+
+* Stack Methods()
+-------------------
+  * Push() Method Push the "element" into Stack
+  * Peek() Method Anedi Objects lo nundi "First Object" ni Return Chestundi.
+  * Pop() Method Anedi Objects lo nundi "First Object" ni Remove Chestundi
+  * Contains() Method Anedi Stack "Objects" lo elements unte return "True" chestundi lekapothe "False" Chestundi.
+  * Clear() Method Removes all the items from the Stack "Objects".
+
+
+Queue<> Interface
+----------------
+* Queue Not Supporting "Index" Position.
+* Queue is Follows "FIFO" Order. Ante Okavela "Element" ni "Delete" Cheste Adi "4" Element" ni Matrame "Delete" Chestundi. ante First Add Chesina Element ni Matrame Delete Chestundi.
+* Queue lo Manam Objects ni Add Cheste adi "Last" lo ne Add Avuthundi. Manaki Nachinatuga Index tho Add Cheyalemu.
+* Group of Object lo A "Element" Ithe First Undo Okavela Delete Chste a "first" Object Matrame Delete Avuthundi
+
+* Insert Example in "Queue"
+-----------------------------
+ Queue<Que> ques = new Queue<Que>();
+            ques.Enqueue(q1);  -> Enqueue is User for Insetion
+            ques.Enqueue(q2);
+ 
+* Delete Example in "Queue"
+-----------------------------
+            ques.Dequeue(); // Deleting the First Object -> q1
+
+* Peek() Method in Queue
+--------------------------
+ Que c = ques.Peek();  // Peek() Method Get First Object from ques
+     Console.WriteLine(c.ID + "  Peek()  " + c.Name);
+
+* Contains() Method in Queue
+---------------------------- 
+    * Contains() Method Anedi "ques" lo elements unte return "True" chestundi lekapothe "False" Chestundi.
+
+* Clear() Method in Queue
+---------------------------- 
+    * Clear() Method Removes all the items from the "ques"
+
+* Count() Method in Queue
+---------------------------- 
+    * Count() Method find the Lenght of the Elements in "ques"    
+             
+LinkedList<> Interface
+-----------------------
+* LinkedList is Nothing but List.
+* LinkedList ni Appudu Use Cheyalante Values ni "Insert" or "Delete" Operations Cheyalanukunnappudu Matrame LinkedList ni Vaadutham.
+* LinkedList is Not "Synchronized" and "ThreadSafe"
+
+HashSet<> Interface
+--------------------
+* HashSet Anedi "Duplicate Values" ni Accept Cheyyadu.
+* HashSet lo "Insetion" Order Vundadu.
+* HashSet lo "Unique Values" Matrame VuntaE.
+* HashSet "Index" Position Anedi Vundadu.
+* HashSet Anedi "Values" ni Ala Store Chesukuntundi Ante "HashTable" Dwara "HashCode" ni Use Chesukoni Manaku Values ni Store Chesipeduthundi.
+* HashSet Anedi Appudu Use Cheyalante "Search" Operations Cheyalanukunnapudu Dinini Use Chestam.
+* HashSet Size Default ga "16" Untudi. Enka Values ni Add Cheste HastSet Size Anedi "Double" Avuthiundi.
+* HashSet lo "Output" Anedi Serial Ga Print Avvadu. Endukante HashTable lo Ala Store Ayyayo Alane Chupistundi Output.
+
+Dictionary<> Interface
+-----------------------
+* Dictionary is a collection of (key, value) pairs.
+* Dictionary Anedi "Key" "Values" ni Matrame Store Chesukuntundi.
+* Dictionary lo "Keys" Anevi Kachithanga "Unique" lo ne Undali.
+* Dictionary Anedi "Duplicate Keys" Accept Cheyyadu.
+
+SortedDictionary<>
+SortedSet<>
+SortedList<>
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+6) Inheritance
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+* "Classes" are Inherit from Only One class, not more than 2,3,... etc Not Supported in C#
+* "Parent" Class or "Base" Class or "Super" Class
+* "Child" Class or "Derived" Class or "Sub" Class
+
+* Parent Class Must be Declare "Public" Constructor
+* Child Class Access Parent Class Properties, but Parent Class Can't be Access Child Classs Properties
+* Set Values to "Parent" Class "Constructor" Must Use base keyword =>  : base(99)
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+7) Interfaces
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+* in Interfaces We Declare Methods, Properties.
+* Interfaces are Support "Multiple Inheritance" in Every "Class"
+* We Cannot Create "Object" to Interfaces
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+8) Abstract Class
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+* in Abstract Class to Define a Method must start with "abstract" keyword
+* in abstract Method Only Declarations, No Body{} =>  public abstract void Test(); 
+* "Parent" Class "abstract" Methods Compulsary Implementing in "Child" Class is Must* using "Inheritance"
+* "Child" Class is Must "Override" Parent Class Methods using "override" keyword
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+9) Polymorphism (Method Overloading & Method Overriding & Method OverHiding)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Method Overloading 
+--------------------
+* Polimoriphism : Behaving based on Input Methods
+* Method OverLoading() -> "One" Method() with different, different "Parameters" (switchvations)  we can Use
+    -> Number of Parameters
+    -> Type of Parameters
+    -> Order of Parameters
+* We Can Apply Instance,Static, Main Methods, and Constuctures
+* We Can Apply "Parent Class, Child Class";
+* Compiler Time Polymorphism
+Example :- 
+public void Test();
+public void Test(int i);
+public void Test(string name);
+public void Test(int i, string name);
+public void Test(string name, int i);
+
+Method Overriding
+------------------
+* "Parent" Class Give to Permition to "Child" Override This Method using "virtual" keyword 
+* "Child" Class Overrinding Parent Class Method using "override" keyword 
+* Method Overriding() -> "Method Name Same & Parameters Same & Return Type Same" in Parent & Child Class
+* We Can Apply Ony "Instance" Methods
+* Run Time Polymorphism
+* Declare "vertual" keyword Method in "Parent Class"
+* Declare "override" keyword in Child Method
+
+Method OverHiding
+------------------
+* "new" Keyword Mandatory
+* Method Name Same 
+* Parameters Same
+* Return Type Same 
+* Static Methods Can Apply "Only OverHiding" in Parent & Child Class 
+* "Parent" Class Give to Permition to "Child" Override This Method using "virtual" keyword 
+* "Child" Class OverrHiding Parent Class Method using "new" keyword
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+10) Properties (Encapsulation)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+* Properties are Like "Getters" and "Setters" => public int ID {get; set;} C# 3.0 OnWards
+* We Can Get Values, We Can Set a Values
+* Binding Data ToGether
+* Holding the Data and variables
+* Security
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+11) Structs
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+* Defference between "struct class" and "class" -> "Structure" is Value Type and "Class" is Reference Type 
+* "struct" keyword use for Structure 
+* int, float, boolean are structures value types; enums are value types
+
+* int a = 10; =>  a = 10  and stru reference Object is Stored in "Stack" in DotNet Language;
+* stru.Name = "Rajkumar" => set Property is Stored in "Heap" Memory in DotNet Language;
+* Note Structure are Stored in "Stack", Classes are Stored in "Heap";
+* Value Types Immediatly Destroy of the scope{} is lost;
+* struct Reference variable also Destroy of the scope is lost;
+* stru.Name = "Rajkumar" is Not Destroy and this is Stored in Garbabe Collections
+* Struct Can't Have Destuctors, but Classes Can Have Destuctors; Destuctor using  "~" Tilt Symbol and it Uses in Only Constructor
+* normal "class" u can use it in Constuctor ~ Destructure ; but struct class u cant use it  ~ Destructure Constructor
+* Struct "Can't Have Inherit from Another class", and "It can inherit Only Interfaces"
+* Structs are Sealed types Classes it Can't Inherit from Another Classes
+* Sealed Class Can't Inherit From Another Classes using "sealed" keyword
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+12) Enums
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+* Enums are Enumerations
+* Enums are Strongly Typed Constants, enums are value types and enums uses for more "Readable, Maintanable" the Program
+* User Defined Data
+* Stores Group of Constants With "UpperCase"
+* "enum" is Special Class
+* We Can Create Constructers, Variables, Methods
+* We "Cannot" Modify after Declared Enum Values it is "Fixed,Perminent" Values
+* We "Cannot" Create Object
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+13) Exception Handling
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+* if any Errors Occurs in Program we use must try,catch, finally
+* "try" keyword runs success code execution
+* "catch" runs "Exception" if any errors in "try" block "catch" block show the based on "Exceptions" and Stop the Execution.
+* "finally" block is must Execute if any errors come or not come
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+14) Delegates and Multicat Delegates
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+* We can Call Multi Methods using Delegate
+* Delegate is a reference to the method and Method Call Back
+* Delegates is a function pointer (or) Delegates is a TypeSafe function pointer
+* We Create "Object" to Delegate and We can Pass "Method" into Delegate
+* before calling method u must declare with "static" keyword in a Every "Method" or function
+* Delegate Return type must Same with Method or function
+* We Can Calling Hello() Method Using Delegates
+
+Example 1:-
+ public delegate void HelloFunctionDelegate(string Message);  delegate return type must same with method 
+ public static void Hello(string message){                    method return type must same delegate
+            Console.WriteLine(message);
+ }
+ 
+HelloFunctionDelegate del = new HelloFunctionDelegate(Hello);
+
+
+* MultiCast Delegates, We can Call Multi Methods using Delegate
+Example 2:-
+            SampleDelegateOne sample = new SampleDelegateOne(Sample);
+            sample += SampleTwo; // Assinging one more Method
+            sample(); We Calling Delegate Object
+
+* if u Caliing Multiple Return Methods, return type "value" is Appudythe delegates tho multi methods call chestavo Last ku A Method ithe Call Avuthundo a Perticular Value matrame "Value" ku Assign Avuthundi. 
+Note* : there are 2 Approches to create a Multicast Delegates. Depending on the Approches you use => +, +=, -, -= using Register a Method with the Delegate
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+15) Partial Class and Sealed Class
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+* Partial Class
+    -> partial "Class Names" & partial "keyword" and "Access Modifiers" is Must* Same and also to "Methods" and if u used "abstract", "sealed" u must* same declare and Also "Method Parameters" and "Return Types" is Must Same
+    -> Partial Class Supports "Inheritance"
+    -> Partial Support Different, Different Interfaces not Same with Both Classes it works
+    -> Using Partial Class we can devide class into the "Parts" wise and "Partial ClassName Must Same" and "Methods" and "Return Types" Must Same
+    -> Partial Classes Support Different, Different Interfaces, Interfaces are Same (or) Not Same with Classes "it Works"
+    -> Secure Function
+    -> We can "get Values" and "We can Set Values" aslo using "Inheritance"
+
+* Sealed Class -> "sealed" class and sealed Method is "Last Implementation" we cannot use it
+--------------
+    -> Selead Method
+    -> Sealed Class
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+16) Generics<>
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+* Class Type or Method Type Parameter using <> Symbols
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+17)  Optional Parameters (Optional Parameters Always Add Last in Method)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+ * Optional Parameters Use For -> "if user add more numbers" in Method  -> Add(10,20,30,40,50...etc), (or) Add(10,20, new int[] {30,40,50});
+ Example:-
+ public static void addNumbers(int num1, int num2, params object[] moreNumbers) { // => Optional Parameters Always Add Last in Method
+ public static void add(int num1, int num2, params int[] moreNumbers) { // => Optional Parameters Always Add Last in Method
+ public static void Abc(int num1, int num2, params int[] moreNumbers) { // => Optional Parameters Always Add Last in Method
+ public static void Abcd(int num1, int num2, [Optional] int[] moreNumbers) { // Optinal Parameters
+ public static void Params(int num1, int num2, int[] moreNumbers = null) { // if null = null, or null = 40,50, 60
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+18) Reflection
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+* Reflection is blue print of the Class we can Get the Values hole class Namespace, ClassName, Constructor and Parametarized Constructor value types, Properties with Return Types
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+19) Iterator Methods
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+* HasNext() -> HasNext() Method Anedi Iterator or foreach loop Chesetappudu "element" tharvatha Next Inka Amyna "Elements" unnayo ledo Check Chestundi.
+* Next() -> Next() Method Anedi "Present" "Element" Print Cheyadaniki Use Chestam.
+* Remove() -> Remove() Method Anedi "Present" Element ni Remove Cheyadaniki Use Chestam
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+20) Multithreading
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+* Multithreading in C# is a process of executing multiple threads simultaneously.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+21) Lambda Expressions =>
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+* We Can Use Mostly in "EntityframeWork"
+* lamda expressions mostly use for filtering, searching, sorting etc and Easily Write and Simple Code. but we can't use it forloops,whileloops, dowhileloops.
+
+Example:-
+----------
+using System;  
+using System.Collections.Generic;  
+using System.Linq;  
+class Dog  
+{  
+    public string Name { get; set; }  
+    public int Age { get; set; }   
+}    
+class demo{  
+    static void Main()  
+    {  
+        List<Dog> dogs = new List<Dog>() {   
+            new Dog { Name = "Rajkumar", Age = 24 },  
+            new Dog { Name = "Srikanth", Age = 25 },  
+            new Dog { Name = "Ajay", Age = 24 }  
+         };  
+         var names = dogs.Select(x => x.Name);  
+         foreach (var name in names)  
+         {  
+             Console.WriteLine(name); // Rajkumar, Srikanth, Ajay
+              
+         }  
+         Console.Read();  
+    }  
+}
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+22) Synchronous vs Asynchronous
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Synchronous
+------------
+* Synchronous Ante Step by Step Execute Avuthu Vuntundi.
+* Okavela Adyna Method "Data Fetching" Fetching kosam Late Avuthe Appudu Data Vache Antha Varaku a Method Next Li ne Podu.
+
+Asynchronous
+------------
+* Asynchronous ante Wait Cheyadu or wait Cheyakapovadam.
+* Okavela Adyna Method "Data Fetching" Fetching kosam Late Avuthe Appudu Asynchronous Anedi Data Vache Antha Varaku Wait Cheyadu on the Spot Next Line Move Avuthundi. 
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+23) Exception Handling (try, catch, finally blocks)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+* Exception Handling ante Program lo Adyna Line "Error" vaste akkadike Program ni "Stop" Chesi Next line ku Move Cheyakunda "Error" Ala Vachindi and Enduku Vachindi ani "catch" block lo "Error Message" ni chupinchatam.
+* Exception Handling ante "try" block lo Adyna Error vaste daanni "catch" block lo chupinchi Enduku Error vastundi ani "Developer" telusukovadam and Costom ga "Error Message" ni Chupinchdam.
+
+
+
+
+
+
+
+
+
+
