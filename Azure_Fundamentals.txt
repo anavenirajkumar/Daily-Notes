@@ -1,0 +1,275 @@
+
+--------------------
+Azure Fundamentals
+---------------------
+--------
+AZ-900
+--------
+1) Understand Cloud Concepts
+2)   ""  Core Azure Services
+3)   ""  Security, privacy, compliance, and trust
+4)   ""  Azure pricing and support
+
+ARM {JSON} File
+----------------
+
+Create Virtual Machine
+----------------------
+
+1) Create Resource Group
+2) Create Virual Networks
+3) Create Virual Machine
+
+
+
+Sql Server (After Created SQL Database in Cloud)
+------------------------------------------------
+* Server Name
+* ConnectionStrings
+* Firewalls and Vitrual Networks(Connecting Only Allowed IP Address Laptops)
+   -> Allow Azure services and resource to Access this server -> "YES"
+   -> Click "Add Client IP" Button Before u must login sql server in "Local" with server name, username, password.
+
+
+Access Plicies(Allow Users)
+----------------------------
+
+
+Subscription
+-------------
+* click the "Cost Analysis" menu
+      -> show the total cost with diagram
+
+
+Web Service (Web Application)***
+-----------------------------
+  -> "App Services"
+  -> "New"
+  -> Create "Resource Group" like "webapp"
+  -> "Web App Name" automatically generating "webapp.azurewebsites.net"
+  -> ""Publich select "Code"
+  -> "Runtime Stack" select "Asp.net V4.8"
+  -> "Operating System select "Windows" and Select "Region"
+
+
+Diployment Slots
+----------------
+* like staging, pre production, production
+
+Configuration
+-------------
+
+Diployment Center
+-----------------
+
+
+
+How to Diploy Asp.net Core Web Application
+-------------------------------------------
+* A System with required Hardware Configuration (for many users loading your application this is use for Automatic load balancing)
+* Operating System
+* Web Server
+* Database Server
+* Runtime Environment for Web Application(Java, .Net, Python, Node JS)
+* Network (accessing the allowed systems)
+* Security
+
+
+Go to Url -> portal.azure.com
+Go to -> "App Services"
+            -> Create app service
+            -> Create "Resource Group" like "webapp"
+            -> "Web App Name" automatically generating "webapp.azurewebsites.net"
+            -> "Publish" select "Code"
+            -> "Runtime Stack" select "Asp.net V4.8"
+            -> "Operating System select "Windows" and Select "Region"
+
+Go to Click Button "Next Diployment" ... Create
+ 
+Build Asp.Net Core Web Api's in Local
+-------------------------------------
+* login "Visual Studio" with same "Azure Email and Password" Cloud Crendentials. 
+* "build" menu  select "Public AppName" and Select "Azure"
+* Select "Azure App Service (Windows)"
+* Select App Service Project Name like "webapp" and click "Finish" and Click "Publish" Button and 
+* Copy Website Url and Open.
+
+
+
+How to Diploy Asp.net Core Web Api CRUD Application with SQL Database in Cloud
+------------------------------------------------------------------------------
+
+* Build & Test Asp.Net Core Web Api's in Local with Database.
+* Create "SQL Database" in Azure Cloud. and Same Name in ConectionStrings : { "WebApp" : Server=webapp.database.windows.net; Database=MiniProject;User Id=webapp;Password=Rajkumar@123" }
+   -> SQL Databases
+   -> Create SQL database
+   -> Create Resourse Group
+   -> Database Name
+   -> Create Server
+          -> Server name*  ->  automatically generating like webapp.database.windows.net
+          -> Server admin login*
+          -> Password and Conform password*
+          -> Location
+          -> Click on OK Button
+   -> Want to use SQL elastic tool pool -> NO
+   -> Compute storage* -> Select "Basic (For less demanding workloads)" and Click Apply Button -> 2GB Monthly 359Rs
+   -> Backup storage redundancy -> Select "Locally-redundent-backup storage -Preview"
+   
+Click "Next Networking" Button
+
+   -> Network Connectivity* -> Select "Public endpoint"
+
+Click "Next Security" Button
+   -> Enable Azure Defender for SQL -> "Not now"
+
+Click "Next Additional setting" Button
+
+Click "Next -Tags" Button
+
+Click "Next Review + create" Button
+
+Click "Create" Button 
+
+* after 2 Minutes Creating SQL DATABASE and SQL Server
+
+
+** After Change DATABASE Url in "appsettings.json" 
+     ->  "Server=webapp.database.windows.net; Database=MiniProject;User Id=webapp;Password=Rajkumar@123"
+
+
+** Open SQL Server in Local
+   -> Select "Database Engine"
+   -> Authentication : "SQL Server Authentication"
+   -> Server name : webapp.database.windoows.net
+   -> Login : admin
+   -> Password : Rajkumar@123
+
+* If Doe's Connect to Cloud DATABASE
+  -> Go to resource in "Azure Cloud"
+  -> Select "Set Server firewall" tab
+  -> Click "Add client IP" Button
+
+* After Login SQL Server in Local 
+   -> Select "Database Engine"
+   -> Authentication : "SQL Server Authentication"
+   -> Server name : webapp.database.windoows.net
+   -> Login : admin
+   -> Password : Rajkumar@123
+
+
+After CREATE TABLES IN DATABASE
+-------------------------------
+
+
+Diployment
+-----------
+* Right click on the Project -> Publish
+* Select -> "Azure" & click on Next
+* Select "Azure App Service(Windows)" & click on Next
+* Subscription -> Visual Studio Subscription -SS3
+* View -> Resource Group -> AppName(East US)
+* App Service Instances -> Select "Cloud App Name"
+
+or Create New App Service Name
+-------------------------------
+Name -> 
+Susbcription -> Visual Studio Subscription -SS3
+Resource Group -> (East US)
+Hosting Plan -> (East US, S1)
+and Create Button
+
+
+** Click on "Finish" Button
+** Service Dependencies (Configure)
+     -> Select "Azure SQL Database" and Click on Next Button
+     -> Select "DATABASE" Name and Click on Next Button 
+     -> user name -> admin
+     -> password -> Rajkumar@123
+
+and Click on "Finish" Button 
+
+and Click on "Publish" Button**
+
+Check Now Api's Functionality using Frontend.
+
+
+--------------------------------------------------
+Extra Diployment Slots (QA, Staging, Production)
+--------------------------------------------------
+-> Go to "App Services"
+-> Open App and Select "Diployment Slots"
+-> Add Slot Name -> "Staging" and Select "AppName"
+-> Go to "Configuration" in Settings
+-> Go to "General settings"
+-> Diployment Slot -> ON
+-> Click on Save Button.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
