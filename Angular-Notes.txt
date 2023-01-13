@@ -1,8 +1,8 @@
 
 Angular Notes
------------------
-1) Angular CLI
-------------------
+-----------------------------------------------------------------
+1) Angular CLI - Angular framework is a component based framework
+-----------------------------------------------------------------
        ng new <project_name>
 
         ng generate component <component_name>
@@ -21,6 +21,10 @@ Angular Notes
 
 2) Components
 --------------
+* Component Communication "@Input, @Output, @ViewChild, @ViewChildren, ng-content, @ContentChild, @ContentChildren".
+* it's a collection of a template in class some meta data.
+* template(view) - User Interface
+
 * ng g c <component-name>
 
   Every component has 4 files auto-generated with it 
@@ -103,9 +107,13 @@ ngClass
 
    ex4:- <div [ngClass]="conditionVariable === 'abc' ? 'abc' : 'efg'">condition Variable Class</div> -> public conditionVariable = "abc";  
 
-   ex5:- <div [ngClass]="{abc: true, efg : true}">Object Class</div>
+   ex5:- <div [ngClass]="valid? 'green' ? 'red'">condition Variable Class</div> -> public valid:boolean = false;  
 
-   ex6:- <div [ngClass]="getClassName();">Method Class</div> -> public getClassName() { return 'abc'}
+   ex6:- <div [ngClass]="{abc: true, efg : true}">Object Class</div>
+
+   ex7 :- <h1 [ngClass]="{'green':  valid, 'red' : !valid}">Dynamic Color Change</h1> // green is 'ObjectKey' & CSS Class, and valid is 'Variable'  -> public valid:boolean = false;
+
+   ex8:- <div [ngClass]="getClassName();">Method Class</div> -> public getClassName() { return 'abc'}
 
 Condition Based Css Class Change
 --------------------------------
@@ -119,10 +127,18 @@ Condition Based Css Class Change
         -> onclick
         -> onmouseover 
         -> onfocus
-        -> onblur 
-   Syntax is 
+        -> onblur
+        -> focusout
+   Syntax is:-
     <button (click)="method()"></button>
-
+            (mouseover)="methods1()"
+            (mousemove)="mouseMove()"
+            (focus)="methods2()"
+            (blur)="methods3()"
+            (focusout)="methods4()"
+            (change)="changeFn1($event)"  -> change chesina tharvatha bind avuthundi. -> event.target.value
+            (keyup)="changeFn2($event)"  -> after key enter binding the value -> event.target.value
+            (ngModelChange)="modelChangeFn($event)" -> keep changing and binding atTime -> value  **
 
 5) Property Binding 
 ---------------------
@@ -165,8 +181,34 @@ Syntax is:-
     http://localhost.com/user/10/photos/34 -> user id = 10 and photo id = 34 
 
  
-8) Template Driven forms
--------------------------
+8) Template Reference Variables & Template Driven forms
+-------------------------------------------------------
+1) Template Reference Variables
+--------------------------------
+<input #referenceKey value="viewChild works!!" />
+<button (click)="onClick()">change value</button>
+  @ViewChild("referenceKey", { static: true }) input: ElementRef;
+  ngAfterViewInit() {
+    console.log(this.input.nativeElement.value); // -> viewChild works!!
+  }
+  onClick() {
+    this.input.nativeElement.value = "test";
+    console.log(this.input.nativeElement.value); // -> test
+  }
+
+<input type="button" #btn value="Enviar" (click)="dynamicClicking()">
+
+ ngOnInit(){
+  setTimeout(() => {
+      this.btn.nativeElement.click();
+    }, 10000); // after 10 seconds, this function calling
+ }
+ dynamicClicking() {
+    console.log('Dynamic Clicking');
+  }
+
+2) Template Driven forms
+------------------------
  * import FormsModule
  * ngForm -> form name as template variable using "#" ex: #loginForm="ngForm" (ngSubmit)="loginUser(loginForm)"
  * give in input field "ngModel"
@@ -379,6 +421,8 @@ development environment vs production environment
 
 14) @ViewChild and @ContentChild
 --------------------------------
+@ViewChild
+-----------
 * We Can Access the properties and functions.
 * return the first matching element
 * "viewChild" is basically used to get Single element at a time using "ngAfterViewInit()" lifecycle.
@@ -388,13 +432,66 @@ development environment vs production environment
 * viewchild gets loaded after ngAfterViewInit() Method
 * viewchild is a decorator used for manipulating/updating, get dom elements, we can set values based on certain conditions child component
 * same like => let ref = document.getElementById('btn'); ref?.click();
-* "@ContentChild" is almost same like "@ViewChild" by accessing ""ngAfterContentInit()" lifecycle 
+
+@ContentChild
+-----------------
+* parent nundi child ku html content "ng-content" dwara transfer chesinappudu vachina html dom single "element" ni access chesukovadaaniki "@Content" use chestam.
+* "@ContentChild"  accessing ""ngAfterContentInit()" lifecycle 
+
+example:-
+  app-component.html
+---------------------
+    <app-child>
+       <h3 #temp>Rajkumar</h3>
+    </app-child>      
+
+app-child-component.html
+-------------------------
+ <ng-content></ng-content>
+
+app-child-component.ts
+-------------------------
+@ContentChild('temp') temp:ElementRef;
+
+ngAfterContentInit(){
+  console.log(this.temp);
+this.temp.nativeElement.setAttribute('style', 'color:red');
+}
+
+
 
 15) @ViewChildren and @ContentChildren 
 -------------------------------------
+@ViewChildren
+---------------
 * return all the matching elements like QueryList.
 * "ViewChildren" always returns all the elements as a QueryList by using "ngAfterViewInit()" lifecycle.
-* "@ContentChildren" is almost same like "@ViewChildren" but accesing "ngAfterContentInit()" lifecycle
+
+@ContentChildren 
+----------------
+* parent nundi child ku html content "ng-content" dwara transfer chesinappudu vachina html dom QueryList "elements" ni access chesukovadaaniki "@ContentChildren" use chestam.
+* "@ContentChildren" accesing "ngAfterContentInit()" lifecycle
+
+example:-
+  app-component.html
+---------------------
+    <app-child>
+       <h3 #temp>Rajkumar</h3>
+       <p #temp>Anaveni</p>
+    </app-child>      
+
+app-child-component.html
+-------------------------
+ <ng-content></ng-content>
+
+app-child-component.ts
+-------------------------
+@ContentChildren('temp') temp:ElementRef;
+
+ngAfterContentInit(){
+  console.log(this.temp);
+  this.temp.nativeElement.setAttribute('style', 'color:red');
+}
 
 16) ng-temlate
 ---------------
@@ -427,11 +524,19 @@ development environment vs production environment
 
 21) View Encapsulation
 ------------------------
+* every component has own style sheet
+* in angular, component css styles are encapsulated into the component's view and don't affect the rest of the application.
+* encapsulation : ViewEncapsulation.None -> oka component lo raasina styles veroka component lo apply avadam.
+* encapsulation : ViewEncapsulation.Emulated -> same component lo raasina styles ade component ki apply avadam.
+* encapsulation : ViewEncapsulation.ShadowDom -> edi apply cheyadam valla third parties styles anevi avuthae. ante bootsrap button classes styles work avvavu.
 * A component H3 tag vundi B Component lo H3 tag nenu A Component ".css" file lo H3 Tag style Cheste adi Only A H3 tag ki matrame Apply Avuthundi. but B Component ki kuda Apply cheyalante "VewEncapsulation" use cheyali.
  ex:- A Component
       templateUrl : ['./users.component.html']
       styleUrls : ['./users.component.css'],
       encapsulation : ViewEncapsulation.None,  -> E Line Add cheste Mottam h3 anni vunna project lo mottaniki color apply avuthundi. 
+* ViewEncapsulation.None -> oka component lo styles nu veroka component lo kuda use chesukovadaaniki "None" use chestam.
+* ViewEncapsulation.Emulated -> same styles same class works.
+* ViewEncapsulation.ShadowDom -> removing bootstrap class styles or thirdparty styles.
 
 22) ViewContainerRef
 ---------------------
@@ -458,14 +563,85 @@ ChangeDetectorRef Methods
  
 25) Angular LifeCycles
 ----------------------
-* first "ngOnChanges()" method call Avuthundi. dinni appudu Use chestamante amyna values changes inappudu Previous Change Value ni Thelusukovadaniki, alage New Value ni Thelusukovadaniki use chestam. Edi Every time Values change inappudu Prathisari Call Avuthundi.
+* first "ngOnChanges()" method call Avuthundi. dinni appudu Use chestamante Vere "Component" nundi Amyna Input Values vachinappudu a Input Values Chnage Ina Prathisari amyna logics raayalante dinni use chestam. values changes inappudu Previous Change Value ni Thelusukovadaniki, alage New Value ni Thelusukovadaniki use chestam. Edi Every time Values change inappudu Prathisari Call Avuthundi.
 * second "ngOnInit()" method call Avuthundi. -> Edi Okkasari matrame Call Avuthundi.
-* third "ngDoCheck()" method call Avuthundi. dinni Appudu Use Chestamante "Current Value" ni Thelusukovadaniki. -> Edi Prathisari Call Avuthundi value ni thelusukovadaniki.
-* fourth "ngAfterContentInit()" method call Avuthundi. ->  Edi Page Load Inappudu Okasari Matrame Call Avuthundi.
-* fifth "ngAfterContentChecked()" method call Avuthundi. -> Edi "click event", jarigina values changes inappudu Prathisari Call Avuthundi.
-* sixth "ngAfterViewInit()" method call Avuthundi. -> Edi Page Load Inappudu Okasari Matrame Call Avuthundi.
-* seventh "ngAfterViewChecked()" method call Avuthundi. -> Edi "click event", jarigina values changes inappudu Prathisari Call Avuthundi.
-* "ngOnDistroy()" ane method ni manaku avasaram leni components Remove cheyadaniki use chestam.
+
+* third "ngDoCheck()" method call Avuthundi. dinni Appudu Use Chestamante Parent Component nundi Child Component ki adyna "Value" vachinappudu a Value ni "Check" chesukovadaaniki dinni use chestam -> Edi Prathisari Call Avuthundi value ni thelusukovadaniki.
+
+* fourth "ngAfterContentInit()" method call Avuthundi. -> Edi Appudu Use chestamante "<ng-content>" tho html "text" ni "Child Component" transfer chesetappudu Page anedi Load avuthundi "Child Component" lo appudu adyna logics raayalanukunnappudu dinni use chestam, Content change ina prathisary Matrame Call Avuthundi ngAfterContentInit() method only.
+   example:- 
+        app-parent-compoent.html    
+----------------------------------       
+              <app-child-component> h1 <app-child-component>
+              <app-child-component> h2 <app-child-component>
+              <app-child-component> h3 <app-child-component>
+
+        app-child-component.html
+----------------------------------- 
+             <ng-content></ng-content>  
+
+
+* fifth "ngAfterContentChecked()" method call Avuthundi. -> Edi Appudu Use chestamante "<ng-content> <p>{{data}}</p> </ng-content> tho data ni "Child Component" ki transfer chesinappudu "DATA" Change Ina prathisary "Child Component" lo "ngAfterContentChecked()" method call avuthundi. 
+
+   example:- 
+        app-parent-component.html    
+----------------------------------
+              <button type="button"(click)="changeContent()">ChangeContent</button>
+              <app-child-component>{{name}}<app-child-component> // first showing "Angular" after clicked function name changed to "Angular Developer" and ngAfterContentChecked call one more time 
+
+        app-parent-component.ts 
+----------------------------------
+define a varible => public name = "Angular";
+ 
+public changeContent(){
+  this.name = "Angular Developer";
+}
+      
+        app-child-component.html
+----------------------------------- 
+             <ng-content></ng-content> 
+
+
+* sixth "ngAfterViewInit()" method call Avuthundi. -> Edi Angular "Html" Page Load Inappudu andulo adyna "id" tho html page ni access chesukovadaaniki use chestam, Edi Page Load Inappudu Okasari Matrame Call Avuthundi.
+ *Example:- html page lo oka popup undi adi atomatic page lo inappudu chupinchali ante daanini oka "idName" echchi ngAfterViewInit() lo ->  let ref = document.getElementById('idName'); ref.click(); ani Logic Raasi Use chestam   
+ * total html page load inakane "ngAfterViewInit()" call avuthundi.
+
+
+* seventh "ngAfterViewChecked()" method call Avuthundi. -> Edi html page change ina like styles change ina, leda html elements delete ina, appudu adyna actions cheyalanukunnappudu dinni use chestam
+* html view lo content change ina prathisari "ngAfterViewChecked()" method call Avuthundi.
+ 
+example:- 
+        app-parent-component.html    
+----------------------------------
+              <button type="button"(click)="changeContent()">ChangeContent</button>
+               <h2>{{name}}</h2>
+
+        app-parent-component.ts 
+----------------------------------
+public name = "Angular"; // define a varible  
+public changeContent(){
+  this.name = "Angular Developer";
+}
+   
+
+* "ngOnDistroy()" ane method ni manaku avasaram leni components ni Remove cheyadaniki use chestam.
+-----------------------------------------------------------------------------------------------------
+ expoer class OnDestroyComponent OnInit, OnDestroy {     
+   OnInit(){
+       localStorage.setItem("component", "OnDestroyComponent");
+   }
+
+   OnDestroy(){
+     localStorage.removeItem('component');
+   }
+
+   -> private productsDataUnsubribe:Subscription; // define a variable
+      this.productsDataUnsubribe = this.productService.getProducts().subscribe((res) => this.products = res);  
+      ngOnDestroy() { // implements interface
+         this.productsDataUnsubribe.unsubscribe();
+      }
+}
+
 
 26) Promises vs Observables
 ----------------------------
@@ -474,11 +650,75 @@ Promises
 * "Promises" are Async
 * "Promises" provide a single value at a time. exucute immediately when we created. 
 * "Promises" are not Cancellable, it does't provide any operators.
+ example :- 
+----------
+   // Promises Emits Single Value
+    const newsPromise = new Promise((resolve) => {
+      resolve('Promise 1');
+      resolve('Promise 2');
+    });
+    newsPromise.then((res) => {
+      console.log(res); // Promise 1
+    });
 
 Observables
 ------------
+* "Observable" is a class
 * "Observables" provide multiple values over a period time.
 * "Observables" provide multiple operators like forEach,filter,reduce,retry,retryWhen,delay...etc
+  example 1 :- 
+------------
+   // Observables Emits Provide Multiple Values
+    const news$ = new Observable((observer) => {
+      observer.next('Obserables 1');
+      observer.next('Obserables 2');
+    });
+    news$.subscribe((res) => {
+      console.log(res); // Obserables 1, Obserables 2
+    });
+
+example 2:- (using -> next, error, complete)
+------------
+const obs = new Observable((nums) => {
+  nums.next(100)
+  nums.next("rxjs")
+  nums.next("hello")
+  nums.error("error occured")
+  nums.complete("completed")
+})
+
+ngOnInit(){
+ this.obs.subscribe(
+  data => console.log(data),
+  err => console.log(err),
+  () => console.log("completed")
+)}
+
+
+example 3:- (using -> next, error, complete)
+------------
+public arr = [];
+const obs = new Observable((nums) => {
+  nums.next(100)
+  nums.next(200)
+  nums.next(3000)
+  //nums.error("error occured")
+  //nums.complete("completed")
+})
+
+ngOnInit(){
+ this.obs.subscribe({
+   next : (data:any) => this.arr.push(data),
+   console.log(this.arr)
+   error : (err) => console.log(err),
+   completed : () => {
+     for(let i in this.arr){
+      this.arr[i] += 99;
+      console.log(this.arr)
+    }
+   }
+ })
+}
 
 27) Multicasting Observable
 -----------------------------
@@ -487,9 +727,81 @@ ex:- Oka "Youtube" Channel undi andulo oka rendu videos subcribers 10 mandi unna
 
 28) Subject and BehaviourSubject
 ---------------------------------
+* "Subject" is a class, we can send data and recieve data in any component.
 * "Subject" ante "Subject" nu "Subcribe" cheste adi "present" value nunde vastundi. not start from "0"
-* "BehaviourSubject" ante is almost same like "Multicasting Observable" but Edi "Previous" Value ni Gurthupettukuntundi.
 
+example:
+--------
+* create "todoService" ---------------------
+      -> public arr = ["task1","task2","task3"];
+         public todoList = new Subject()
+
+   public sendTodos(){
+    this.todoList.next(this.arr)
+   }
+
+  public addTodo(user:any){
+   this.arr.push(user);
+   this.sendTodos()
+ }
+
+* create component for getting data ----------------------
+  public todos:any = [];
+  constructor(private ts:todoService){}    
+  ngOnInit(){
+    this.ts.todoList.subscribe((data) => {
+    this.todos = data
+   });
+    this.ts.sendTodos()
+  }
+
+* create component for adding data into subscription------------------
+ html:-
+  <input type="text" [(ngModel)]="user">
+  <button type="button" (click)="add(user)">Add</button>
+ ts :-
+  add(user:any){
+    this.ts.addTodo(user)
+  }
+
+* "BehaviourSubject" ante is almost same like "Multicasting Observable" but Edi "Previous" Value ni Gurthupettukuntundi.
+example:
+--------
+* create "todoService" ---------------------
+   public s1= new Subject()
+   public s2= new BehaviourSubject("behaviour subject")
+   constructor(){
+     this.s1.next("simple subject");
+   }
+
+
+* create component for getting data --------------------
+  constructor(private ts:todoService){}    
+  ngOnInit(){
+    this.ts.s1.subscribe((data) => {
+     console.log(data);
+   });
+    this.ts.s2.subscribe((data) => {
+     console.log(data);
+   });
+  }
+
+
+* "ReplaySubject" 
+  -> public data = new ReplaySubject(2,3000); // defining length, expiry time of data;
+    constructor(){  // Service Constructor
+     this.data.next("One");
+     this.data.next("Two");
+   }
+  *Note -> service nu subscribe chesina 3 Seconds tharvatha Data anedi expiry avuthundi.
+* "AsyncSubject" ->
+  -> public data = new AyncSubject();
+    constructor(){  // Service Constructor
+     this.data.next("One");
+     this.data.next("Two");
+     this.data.next("Three");
+     this.data.complete(); // this method calls after initializing the values and latest values it can be storing; -> this logic it can be use in component level also and after subscribe the service method Data is coming;
+   }
 28) Angular Internationalization (i18n) (Multi Languages Translater)
 --------------------------------------------------------------------
 * install Process
@@ -504,6 +816,456 @@ simple example:- dropdown list lo english,hindi,telugu,spanish,germany,french el
 -----------------
 * "ngNonBindable" ante Dynamic Element "value" ni Bind cheyadu.
 * ex:- <p ngNonBindable> {{name}}</p>
+
+30) show More Aritcle and Hide Article Content Length
+-----------------------------------------------------
+html
+----
+<p>
+  {{ loremText | slice: 0:endText }}
+</p>
+<p style="color: red" (click)="showMoreText()">{{ showMore }}</p>
+
+ts
+--
+  public loremText =
+    'Angular Article! and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available.';
+
+  public endText = 17;
+  public showMore = 'showMore';
+  public showMoreText() {
+    if (this.endText == 17) {
+      this.endText = this.loremText.length;
+      this.showMore = 'Hide';
+    } else if (this.loremText.length) {
+      this.showMore = 'showMore';
+      this.endText = 17;
+    }
+  }
+
+
+31) Only Matching Data Two Arrays 
+---------------------------------
+  public names1: any = ['a', 'b', 'c', 'd'];
+  public names2: any = ['a', 'b'];
+  public allNames: any = []; // [ "a", "b" ]
+
+  constructor() {
+    this.names1.forEach((e) => this.nameFinder(e));
+  }
+  public async ngOnInit() {
+    let names = await this.checkData();
+    console.log(names); // ["a", "b"]
+  }
+
+  public nameFinder(name: any) {
+    let all = this.names2.filter((e) => e === name);
+    console.log(all); // [ [ "a" ], [ "b" ] ]
+    all.forEach((e) => {
+      this.allNames.push(e);
+    });
+  }
+
+  public checkData() {
+    return this.allNames;
+  }
+
+
+32) Adding Extra DATA with Api Responce
+----------------------------------------
+
+public brands:any = [];
+
+ getBrands(){
+    this.shopService.getBrands().subscribe((response:any) => {
+      this.brands = [{id : 0, name : 'All'}, ...response] 
+    }, error => {
+      console.log(error);
+    });
+  }
+
+33) FormBuilder Array & removeAt() & hidePassword
+--------------------------------------------------
+
+html code
+---------
+<form>
+  <div class="form-group">
+    <label for="exampleInputEmail1">Email </label>
+    <input
+      type="email"
+      class="form-control"
+      id="exampleInputEmail1"
+      placeholder="Enter email"
+    />
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Password </label>
+    <input
+      [type]="showPassword ? 'text' : 'password'"
+      class="form-control"
+      id="exampleInputPassword1"
+      placeholder="Password"
+    />
+  </div>
+  <div class="form-check" *ngIf="!showPassword">
+    <input
+      type="checkbox"
+      [checked]="showPassword"
+      (change)="showpassword()"
+      class="form-check-input"
+    />showpassword
+  </div>
+  <div class="form-check" *ngIf="showPassword">
+    <input
+      type="checkbox"
+      [checked]="showPassword"
+      (change)="showpassword()"
+      class="form-check-input"
+    />hidepassword
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<br />
+<h4>Select Courses</h4>
+<ng-container *ngFor="let l of languages">
+  <input type="checkbox" value="{{ l }}" (change)="selectLang($event)" />{{ l }}
+</ng-container>
+
+<h4>Selected Courses</h4>
+<ng-container>{{ form.get('languages')?.value }}</ng-container>
+
+
+typescript code
+---------------
+import { Component, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormControl } from '@angular/forms';
+@Component({
+  selector: 'my-app',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+})
+export class AppComponent implements OnInit {
+  // define variable
+  public showPassword: boolean = false;
+  public languages = ['Java', '.Net', 'Python', 'Angular', 'ReactJS', 'SQL'];
+  public form;
+  constructor(private fb: FormBuilder) {
+    this.form = this.fb.group({
+      languages: this.fb.array([]),
+    });
+  }
+  ngOnInit() {}
+
+  // calling function
+  showpassword() {
+    this.showPassword = !this.showPassword;
+  }
+
+  // changeEvent
+  selectLang(event: any) {
+    // console.log(event.target.value);
+    let lang = this.form.get('languages') as FormArray;
+    if (event.target.checked) {
+      lang.push(new FormControl(event.target.value));
+    } else {
+      let i = 0;
+      lang.controls.forEach((ele: any) => {
+        if (ele.value === event.target.value) {
+          lang.removeAt(i);
+          return;
+        }
+        i++;
+      });
+    }
+  }
+}
+
+
+
+34) RXJS (Operators)
+----------------------
+of() -> of is a function that returns observable
+of([1,2,3,4],7,8,9).subcribe((data => {console.log(data)}) -> printing the same array in console
+
+from() -> it takes only iterable arguments like -> [1,2,3,4] or "abcdef"; 1,2,3,4 or a,b,c,d,e,f
+from([1,2,3,4]).subcribe((data => {console.log(data)}) -> printing the array of each element
+
+range() -> it takes numbers (start, count)
+range(5).subscribe((data) => {cosole.log(data)})
+range(1,10).subscribe((data) => {cosole.log(data)})
+
+interval() -> set seconds to call each time
+interval(1000).subscribe((data) => {cosole.log(data)})
+
+map() -> when we use map() in "observable" we must* use "pipe" operator
+let obs = of(1,2,3,4,5).pipe(
+  map((data) => {
+      return data*10
+  })  
+)
+
+obs.subscribe((data) => {console.log(data)});
+
+fromEvent()
+------------
+* each click responce lo vachina each object nu emits chestundi.
+
+html :-
+-----
+  <button type="button" #btn>Click me</button>
+  <input type="text" #search placeholder="Search Product">
+
+ts files:-
+----------
+  @ViewChild('search') search:any;
+  @ViewChild('btn') btn:any;
+
+ngAfterViewInit(){
+
+ fromEvent(this.search.nativeElement, 'keyup').subscribe((data) => {
+  console.log(data); // based on the typed letters that matching letters data coming from Api Responce
+ });
+
+ fromEvent(this.btn.nativeElement, 'click').subscribe((data) => {
+  console.log(data);
+ });
+}
+
+
+debounceTime()
+---------------
+* mostly using for delaying the time when the user entering the each keyword dalaying for the api calls.
+* reduce each letter api calls.
+
+
+html:-
+------
+ <input type="text" #search placeholder="Search Product">
+
+ts file:-
+---------
+@ViewChild('btn') btn:any;
+
+ngAfterViewInit(){
+ fromEvent(this.search.nativeElement, 'keyup').pipe(
+ debounceTime(5000)
+ ).subscribe((data) => {
+   console.log(data.target.value);
+ });
+}
+
+
+merge()
+-------
+* mostly used for different, different data coming from different, different Api's.
+let obs1  = of(89,60,56, 78);
+let obs2 = from(["c","s"]);
+
+let obs3 = merge([this.obs1, this.obs2])
+
+ngOnInit(){
+  this.obs3.subscribe((data) => {
+    console.log(data)
+  })
+}
+
+take()
+-------
+let obs1 = interval(1000).pipe(
+   take(5) // take is takes number argument and limit of the observable values capture
+);
+
+let obs2 = of(1,2,3,4,5,6,7,8,9).pipe(
+   take(5) // take is takes number argument and limit of the observable values capture
+);
+
+ngOnInit(){
+ this.obs1.subscribe((data) => {
+  console.log(data);
+ })
+this.obs2.subscribe((data) => {
+  console.log(data);
+ })
+}
+
+
+pluck()
+--------
+
+* pluck() operator used for "perticular property" in the object format.
+let arr = from([
+  {
+    "id" : 1,
+    "name" : "Rajkumar",
+    "address" : {
+       "state" : "Telanagana",
+       "city" : "Karimnagar"
+      } 
+  },
+ {
+    "id" : 2,
+    "name" : "Sai",
+    "address" : {
+       "state" : "AndhraPradesh",
+       "city" : "Nizambad"
+      } 
+  },
+ {
+    "id" : 3,
+    "name" : "Shajahan",
+    "address" : {
+       "state" : "AndhraPradesh",
+       "city" : "Guntoor"
+      } 
+  }
+]
+).pipe(
+pluck('address', 'city'))
+ngOnInit(){
+  this.arr.subscribe((data) => {
+    console.log(data); // we can emit single property key in the each object only
+  })
+}
+
+
+skip()
+-------
+* skip is used for skip the observable data
+
+let arr = from([
+  {
+    "id" : 1,
+    "name" : "Rajkumar",
+    "address" : {
+       "state" : "Telanagana",
+       "city" : "Karimnagar"
+      } 
+  },
+ {
+    "id" : 2,
+    "name" : "Sai",
+    "address" : {
+       "state" : "AndhraPradesh",
+       "city" : "Nizambad"
+      } 
+  },
+ {
+    "id" : 3,
+    "name" : "Shajahan",
+    "address" : {
+       "state" : "AndhraPradesh",
+       "city" : "Guntoor"
+      } 
+  }
+]
+).pipe(skip(2))
+
+ngOnInit(){
+  this.arr.subscribe((data) => {
+    console.log(data); 
+  })
+}
+
+
+distinctUntilChanged()
+------------------------
+
+* distinctUntilChanged is used for number of arguments only "serial wise" repeated in the observable we can subscribe specified values.
+
+obs = of(9,9,7,7,6,5,4,3,9,7).pipe(
+distinctUntilChanged()
+)
+
+ngOnInit(){
+  this.obs.subscribe((data) => {
+    console.log(data); 
+  })
+}
+
+
+ajax()
+-------
+* ajax provides what Api is giving request, responce, headers etc...
+let obs = ajax('https://jsonplaceholder.typicode.com/users')
+
+ngOnInit(){
+ this.obs.subcribe((data) => {
+   console.log(data)
+ })
+}
+
+retry()
+--------
+* retry() is used for when we subscribe any Api, that Api is comes error after we trying to retry subsription how much time calling the Api we provide number of arguments.
+
+let obs = ajax('https://jsonplaceholder.typicode.com/users').pipe(
+ retry(2) // if any error come this Api we trying to call 2 times
+)
+
+ngOnInit(){
+ this.obs.subcribe((data) => {
+   console.log(data)
+ }, error => {
+   console.log(error)
+ })
+}
+
+
+
+35) Content Projection with ng-content
+---------------------------------------
+
+
+app-parent-component.html
+-------------------------
+<app-child-component [products1]="products1"> 
+  <h1>Products One<h1>
+</app-child-component>
+
+<app-child-component [products2]="products2"> 
+  <h1>Products Two<h1>
+</app-child-component>
+
+app-parent-component.ts
+-----------------------
+ public products1 = [..........etc];
+ public products2 = [..........etc];
+
+
+app-child-component.html
+-------------------------
+<ng-content> </ng-content>
+<div *ngFor="let prod1 of products1">
+     {{prod1}}
+</div>
+
+<ng-content> </ng-content>
+<div *ngFor="let prod2 of products2">
+     {{prod1}}
+</div>
+
+app-child-component.ts
+----------------------
+ @Input products1:any;
+ @Input products2:any;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
