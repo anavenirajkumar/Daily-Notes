@@ -26,7 +26,7 @@ Angular Notes
 * template(view) - User Interface
 
 * ng g c <component-name>
-
+--------------------------
   Every component has 4 files auto-generated with it 
     - component.html -> view or html or template file -> UI 
     - component.ts -> it will be a class file which will have methods -> Logic 
@@ -41,29 +41,54 @@ Angular Notes
  styleURLS -> for linking your component stylesheet 
         - component.scss 
 
-3) Decorators
-----------------
+ Create Modules
+-----------------
+* "CoreModule" for -> binding the data {{name}} & stuctural directives(*ngIf)
+* name.modules.ts -> declarations: [components], imports : [CoreModule, DynamicModuleRouting], entryComponents : [dynamicComponents] -> for only Dynamic Components
+* name.routing.modules.ts -> imports: [RouterModule.forChild(routes)], exports: [RouterModule]
+* import in app.routing.module.ts -> const routes = [{ path: 'lifecycles', loadChildren: () => import('./lifecycles/lifecycle.module').then(m => m.LifecycleModule) }]
+
+3) Input, Output Decorators
+----------------------------
 * Whenever you see a @ symbol - it's a decorator
 
-@Input Decorator [product]="productData" => "product" is @Input() Property; "productData" is Dynamic Data
-----------------------------------------------------------------------------------------------------------
-* Parent Component lo vunna Data nu Child Component Receive Chesukovadaniki use Chestam.
+input-component.html
+--------------------
+<h2>Input Component</h2>
+<app-output-component [data]="childNames" (sendEvent)="calledChild($event)"></app-output-component>
 
-ex:-  <app-child [fromParent]="variableName"></app-child>
+input-component.ts
+-------------------
+ @ViewChild(OutputComponent) public child: OutputComponent;
+  public childNames: string[] = [];
+  ngOnInit(){
+     this.childNames = this.child.getNames();
+  }
 
-      @Input('fromParent') public variableName ; (OR) @Input public  fromParent;
+  public calledChild(data:any) {
+    console.log('Called Child Component', data);
+    this.childNames = data; // re Assigning the data when child component clicked the event;
+  }
 
+output-component.html
+----------------------
 
-@Output Decorator
------------------
-* Child Component lo vunna Data nu Parent Component ki Pampivvadaniki use Chestam.
-ex:- @Output() public childInfo = new EventEmitter();
-     
-     public clickEvent(){ // -> write function in html
-       this.childInfo.emit("varibleName or ObjectVariableName")
-     } 
+<h2>Output Component</h2>
+<button type="button" class="btn-primary" (click)="callParent()">Call Parent Method</button>
 
-  <app-child (childInfo)="declareParentVariableName"=$event"> </app-child>
+output-component.ts
+-------------------
+  @Input() data: any;
+  @Output() sendEvent = new EventEmitter();
+  public names: any = ['one', 'two', 'three', 'four', 'five'];
+  public changedNames: any = ['six', 'seven', 'eight', 'nine', 'ten'];
+
+  public getNames() {
+    return this.names;
+  }
+ public callParent() {
+    this.sendEvent.emit(this.changedNames);
+  }
 
 
 4) Directives
@@ -114,6 +139,8 @@ ngClass
    ex7 :- <h1 [ngClass]="{'green':  valid, 'red' : !valid}">Dynamic Color Change</h1> // green is 'ObjectKey' & CSS Class, and valid is 'Variable'  -> public valid:boolean = false;
 
    ex8:- <div [ngClass]="getClassName();">Method Class</div> -> public getClassName() { return 'abc'}
+
+   ex9:-  <div [ngClass]="{'c' : name === 'styles'}">Show Color</div> // public name = 'styles';
 
 Condition Based Css Class Change
 --------------------------------
@@ -383,41 +410,40 @@ development environment vs production environment
 * we do content projection using <ng-content>
 * "ng content projection"is nothing but you can send the content to another component or it can be any component or any module. class level => select=".classname", attribute level => select ="[abcd]"
 * "ng contnent" projection ante content nu transfer cheyadam like any component ki, leda any module ki
+-----------------
+parent component
+------------------
 
 <app-component-html>
-
   <app-ng-content-projection>
-    This Content is from the App Component to app-ng-content-projection Component
-   <p role>
-     This is a selected content for Roles
-   </p>
-  
+      <p role> This is a selected content for Roles </p>
+      <p class="test"> This Content is from the App Component to app-ng-content-projection Component </p>
   </app-ng-content-projection>
 
-
-  <ng-template #admin>
-    This is for Admin Content
-  </ng-template>
-
+   <app-ng-content-projection>
+       <ng-template #adminTemplate>
+          This is a Large Content thats why we are using template
+       </ng-template>
+   </app-ng-content-projection>
 </app-component-html>
 
+----------------
+child component
+----------------
 <app-ng-content-projection-html>
-  <p>Angular Content Projection</p>
-  <ng-content></ng-content>
-  <ng-content select="[role]"></ng-content> 
-    <div *ngIf="adminTemplate">
-      <template [ngTemplateOutlet]="adminTemplate">
-           
-      </template>
-   </div>
+  <ng-content select=".test"></ng-content>   output ->  <p> This Content is from the App Component to app-ng-content-projection Component </p>
+  <ng-content select="[role]"></ng-content>  output ->  <p> This is a selected content for Roles </p>
+
+    <div *ngIf="adminTemplate"> ------------------------------------------ *ngIf="adminTemplate"
+      <template [ngTemplateOutlet]="adminTemplate"> </template> ---------- <template [ngTemplateOutlet]="adminTemplate"> </template>
+   </div> 
+
 </app-ng-content-projection-html>
 
-<app-ng-content-projection-component.ts>
-  @ContentChild('admin')
-  adminTemplate : TemplateRef<any> | any;
-</app-ng-content-projection-component.ts>
-
-
+--------------------
+child component.ts
+--------------------
+ @ContentChild('adminTemplate') adminTemplate : TemplateRef<any>;
 
 14) @ViewChild and @ContentChild
 --------------------------------
@@ -528,7 +554,7 @@ ngAfterContentInit(){
 * in angular, component css styles are encapsulated into the component's view and don't affect the rest of the application.
 * encapsulation : ViewEncapsulation.None -> oka component lo raasina styles veroka component lo apply avadam.
 * encapsulation : ViewEncapsulation.Emulated -> same component lo raasina styles ade component ki apply avadam.
-* encapsulation : ViewEncapsulation.ShadowDom -> edi apply cheyadam valla third parties styles anevi avuthae. ante bootsrap button classes styles work avvavu.
+* encapsulation : ViewEncapsulation.ShadowDom -> edi apply cheyadam valla third parties styles anevi remove avuthae. ante bootsrap button classes styles work avvavu.Only perticular component ku matrame third party styles work avvavu.
 * A component H3 tag vundi B Component lo H3 tag nenu A Component ".css" file lo H3 Tag style Cheste adi Only A H3 tag ki matrame Apply Avuthundi. but B Component ki kuda Apply cheyalante "VewEncapsulation" use cheyali.
  ex:- A Component
       templateUrl : ['./users.component.html']
@@ -1213,14 +1239,16 @@ ngOnInit(){
 
 
 
+---------------------------------------
 35) Content Projection with ng-content
 ---------------------------------------
 
+* position the content "<h1 role>Products One<h1>" & you can display wherevar
 
 app-parent-component.html
 -------------------------
 <app-child-component [products1]="products1"> 
-  <h1>Products One<h1>
+  <h1 role>Products One<h1>         // -> mention the key
 </app-child-component>
 
 <app-child-component [products2]="products2"> 
@@ -1235,7 +1263,7 @@ app-parent-component.ts
 
 app-child-component.html
 -------------------------
-<ng-content> </ng-content>
+<ng-content select="[role]"> </ng-content> // -> display first of the key content
 <div *ngFor="let prod1 of products1">
      {{prod1}}
 </div>
@@ -1252,40 +1280,559 @@ app-child-component.ts
 
 
 
+--------------------
+36) Elements
+--------------------
+* import in constructor(private ele : ElementRef)
+
+app-component.html
+------------------
+<h2>Dynamic Element Text Creation</h2>
+
+<button type="button" #btn (click)="clickMe()">Click Me</button>
+
+app-component.ts
+----------------
+ @ViewChild('btn', { static: false }) btn: ElementRef; // elements using VieChild with #btn
+  constructor(private ele:ElementRef) {} // using with constructor
+
+  ngOnInit() {
+    let p = document.createElement('p'); // create element 
+    // this.btn.nativeElement.remove();  // delete element
+    p.classList.add('test'); // create element class -> .test {color: green}
+    let text = document.createTextNode('Dynamic Paragraph Creation'); // create element text
+    p.appendChild(text); // append text to element
+    document.body.appendChild(p); // append element text to body;
+  }
+
+  ngAfterViewInit() {
+    this.btn.nativeElement.setAttribute('style', 'color:red');
+    this.btn.nativeElement.click();
+  }
+
+  public clickMe() {
+    console.log("click me function called");
+  }
+
+
+Example 2:-
+------------
+app-element-two.html
+--------------------
+
+<h2>Element Component Two</h2>
+<div class="container">
+</div>
+
+<div class="query">
+   <p>Query Selector</p>
+  <button type="button" (click)="call()">Click Me</button>
+</div>
+
+app-element-two.ts
+-------------------
+ constructor(private el: ElementRef) {}
+  ngOnInit() {
+    // Example 1
+    debugger;
+    let div = document.getElementsByClassName('container'); // list of all classNames in the project
+    let p1 = document.createElement('p'); // dynamically create <p> <p/> only tag 
+    p1.innerHTML = "This is Paragraph 1"; // adding p tag "Content"
+    let p2 = document.createElement('p');
+    p2.innerHTML = 'This is Paragraph 2';
+    div[2].appendChild(p1); // adding paragraph into this "div" only
+    div[2].appendChild(p2);
+
+    let p3 = document.createElement('p');
+    p3.innerHTML = 'This is Paragraph 3';
+
+  }
+  ngAfterViewInit() {
+
+    // querySelector
+    let q = this.el.nativeElement.querySelector('.query'); // using (.className)
+    q.children[0].remove(); // removing the child element tag
+    let p = document.createElement('p'); // creating the new element
+    p.innerHTML = 'New Element is Created'; // adding the tag content
+    q.appendChild(p); // appending the p tag
+    q.children[0].click(); // dynamic clicking the button after page loads
+    q.children[0].setAttribute('style', 'color:red');
+    console.log(q);
+
+    // insertBefore(element, set where tag positon)
+    let p2 = document.createElement('p'); // dynamically create <p> <p/> only tag 
+    p2.innerHTML = "This is paragraph 2"; // adding p tag "Content"
+    q.insertBefore(p2, p);
+    
+  }
+  public call() {
+    console.log("Call Method Called");
+  }
+
+
+------------------------
+37) DynamicComponent
+------------------------
+* dynamic Condition "*ngComponentOutlet"
+
+dynamic-component.html
+-----------------------
+
+<div class="container">
+  <div class="dinamic">
+    <button mat-raised-button color="primary" (click)="assignComponent('cow')"> Cow </button>
+    <button mat-raised-button color="primary" (click)="assignComponent('cat')"> Cat </button>
+    <button mat-raised-button color="primary" (click)="assignComponent('dog')"> Dog </button>
+  </div>
+
+    <div>
+      <ng-container *ngComponentOutlet="dummyComponent"></ng-container>
+    </div>
+</div>
+
+dynamic-component.ts
+--------------------
+ dummyComponent = DogComponent; // define and assing any component when the page component is loads
+
+  constructor() {}
+  ngOnInit() {
+
+  }
+
+  assignComponent(component:any) { // show condition based components, (or) other module components
+    if (component === "cow") {
+      this.dummyComponent = CowComponent; // import CowComponent
+    } else if (component === "dog") {
+        this.dummyComponent = DogComponent; // import DogComponent
+      } 
+    else this.dummyComponent = CatComponent; // import CatComponent
+  }
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    Component Interaction (Accessing the child method, parent method, passing data from one component to another component Input(),Output()
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+component-interaction.html (First Component)
+---------------------------------------------
+
+<h2>Component Interaction</h2>
+<p *ngFor="let name of childNames" #aa>{{name}}</p>
+
+<app-component-interaction-two [data]="childNames" (sendEvent)="calledChild($event)"></app-component-interaction-two>
+
+
+component.interaction.ts
+-------------------------
+import { AfterViewChecked, AfterViewInit, Component, ContentChildren, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { ComponentInteractionTwo } from './component-interaction-two';
+
+@Component({
+  selector: 'app-component-interaction',
+  templateUrl: './component-interaction.html',
+  styles: ['']
+})
+export class ComponentInteraction implements OnInit, AfterViewInit, AfterViewChecked {
+
+ 
+ // @ViewChild('child') public child: ComponentInteractionTwo;
+
+  public childNames: string[] = [];
+  @ViewChild(ComponentInteractionTwo) public child: ComponentInteractionTwo;
+  @ViewChildren('aa') aa: QueryList<ElementRef>
+  constructor() {}
+  ngOnInit() {
+    this.child.number = 10;
+    this.childNames = this.child.getNames();
+    console.log(this.childNames);
+  }
+
+  ngAfterViewInit() {
+    console.log(this.aa);
+    this.aa._results[0].nativeElement.setAttribute('style', 'color:red');
+    this.aa._results[1].nativeElement.setAttribute('style', 'color:green');
+    this.aa._results[2].nativeElement.setAttribute('style', 'color:yellow');
+    this.aa._results[3].nativeElement.setAttribute('style', 'color:blue');
+    this.aa._results[4].nativeElement.setAttribute('style', 'color:orange');
+  }
+
+  public calledChild(data:any) {
+    console.log('Called Child Component', data);
+    this.childNames = data;
+  }
+
+  ngAfterViewChecked() {
+      console.log(this.aa);
+      this.aa._results[0].nativeElement.setAttribute('style', 'color:red');
+      this.aa._results[1].nativeElement.setAttribute('style', 'color:green');
+      this.aa._results[2].nativeElement.setAttribute('style', 'color:yellow');
+      this.aa._results[3].nativeElement.setAttribute('style', 'color:blue');
+      this.aa._results[4].nativeElement.setAttribute('style', 'color:orange');
+  }
+
+
+}
+
+
+component-interaction-two.html (2nd Component)
+-----------------------------------------------
+
+<h2>component-interaction-two</h2>
+<button type="button" class="btn-primary" (click)="callParent()">Call Parent Method</button>
+
+
+component-interaction.ts
+-------------------------
+
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+
+@Component({
+  selector: 'app-component-interaction-two',
+  templateUrl: './component-interaction-two.html',
+  styles: ['']
+})
+export class ComponentInteractionTwo implements OnInit {
+  @Input() data: any;
+  @Output() sendEvent = new EventEmitter();
+  public number = 0;
+  public names: any = ['one', 'two', 'three', 'four', 'five'];
+  public changedNames: any = ['six', 'seven', 'eight', 'nine', 'ten'];
+  constructor() { }
+
+  ngOnInit() {
+    console.log(this.data);
+  }
+
+  public getNames() {
+    debugger;
+    console.log(this.names);
+    console.log(this.number);
+    return this.names;
+  }
+
+  public callParent() {
+    this.sendEvent.emit(this.changedNames);
+  }
+}
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                           Elements (Creating dynamic html tags & content & set tag postion & remove html tags from DOM)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+* import in "constructor(private el: ElementRef)"
+
+example 1:-
+-----------
+
+elements-component.html
+------------------------
+
+<h2>Elements Component</h2>
+
+<div>
+
+</div>
+<button type="button" #btn (click)="clickMe()">Click Me</button>
+
+elements-component.ts
+----------------------
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+
+@Component({
+  selector: 'app-elements',
+  templateUrl: './elements-component.html',
+  styles: ['.{test : color: red};']
+})
+export class ElementsComponent implements OnInit, AfterViewInit {
+
+ @ViewChild('btn', { static: false }) btn: ElementRef; // elements using #btn
+  constructor() {}
+  ngOnInit() {
+    let p = document.createElement('p'); // create element
+    // this.btn.nativeElement.remove();
+    p.classList.add('test'); // create element class
+    let text = document.createTextNode('Dynamic Paragraph Creation'); // create element text
+    p.appendChild(text); // append text to element
+    document.body.appendChild(p); // append element text to body;
+   
+  }
+
+  ngAfterViewInit() {
+    this.btn.nativeElement.setAttribute('style', 'color:red');
+    this.btn.nativeElement.click();
+  }
+  public clickMe() {
+    console.log("click me function called");
+  }
+}
+
+
+example 2
+----------
+
+elements-component-two.html
+---------------------------
+
+<h2>Element Component Two</h2>
+
+<div class="container">
+
+</div>
+
+<div class="query">
+   <p>Query Selector</p>
+  <button type="button" (click)="call()">Click Me</button>
+</div>
+
+
+elements-component-two.ts
+---------------------------
+
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+
+@Component({
+  selector: 'app-elements-two',
+  templateUrl: './elements-component-two.html',
+  styles: ['.test{border: 2px solid red};']
+})
+export class ElementsComponentTwo implements OnInit, AfterViewInit {
+
+  // @ViewChild('div', { static: false }) div: ElementRef;
+  //@ViewChild('query', { static: false }) query: ElementRef;
+  constructor(private el: ElementRef) {}
+  ngOnInit() {
+    // Example 1
+    debugger;
+    let div = document.getElementsByClassName('container'); // list of all classNames in the project
+    let p1 = document.createElement('p'); // dynamically create <p> <p/> only tag 
+    p1.innerHTML = "This is Paragraph 1"; // adding p tag "Content"
+    let p2 = document.createElement('p');
+    p2.innerHTML = 'This is Paragraph 2';
+    div[2].appendChild(p1); // adding paragraph into this "div" only
+    div[2].appendChild(p2);
+
+    let p3 = document.createElement('p');
+    p3.innerHTML = 'This is Paragraph 3';
+
+  }
+  ngAfterViewInit() {
+
+    // querySelector
+    let q = this.el.nativeElement.querySelector('.query'); // using (.className)
+    q.children[0].remove(); // removing the child element tag
+    let p = document.createElement('p'); // creating the new element
+    p.innerHTML = 'New Element is Created'; // adding the tag content
+    q.appendChild(p); // appending the p tag
+    q.children[0].click(); // dynamic clicking the button after page loads
+    q.children[0].setAttribute('style', 'color:red');
+    console.log(q);
+
+    // insertBefore(element, set where tag positon)
+    let p2 = document.createElement('p'); // dynamically create <p> <p/> only tag 
+    p2.innerHTML = "This is paragraph 2"; // adding p tag "Content"
+    q.insertBefore(p2, p);
+    
+  }
+  public call() {
+    console.log("Call Method Called");
+  }
+}
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                      Dynamic Component Loader
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Angular 2,4  (Old)Version
+-------------------------
+* import all components in module.
+* import components-tags(app-viewencapsulation,app-lifecycles, app-contentprojection)
+
+example:-
+---------
+  declarations: [DynamicComponent, DynamicComponentOne, ViewEncapsulationComponent, ContentProjectionComponent, LifecycleComponent, ViewEncapsulationComponentOne, ViewEncapsulationTwoComponent, ContentProjectionOneComponent, LifecycleOneComponent, LifecycleTwoComponent], // all components in different, different modules
+  imports: [DynamicRoutingModule, CommonModule],
+  entryComponents: [DynamicComponentOne, LifecycleComponent, ViewEncapsulationComponent, ContentProjectionComponent] // (only tag-components)
+
+
+html file
+---------
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <button type="button" class="btn-primary" (click)="loadComponent('lifecycles')">load Lifecycles</button>
+      <button type="button" class="btn-primary" (click)="loadComponent('contentprojection')">load Content Projection</button>
+      <button type="button" class="btn-primary" (click)="loadComponent('encapsulation')">load ViewEncapsulation</button>
+    </div>
+    <ng-template componentRef></ng-template>
+  </div>
+</div>
+
+typescript
+----------
+  public count = 0;
+  public componentRef:any;
+  constructor(private resolver: ComponentFactoryResolver, private includeTemplate: ViewContainerRef) { // import
+  }
+  ngOnInit() {
+    let componentFactory = this.resolver.resolveComponentFactory<DynamicComponentOne>(DynamicComponentOne);
+    this.componentRef = this.includeTemplate.createComponent<DynamicComponentOne>(componentFactory);
+    interval(1000).subscribe(count => {
+      this.count = this.count + 1;
+      this.showDynamicComponent();
+    })
+  }
+
+  // showing DynamicComponent using by Button
+  public loadComponent(component: any) {
+    console.log(component);
+    if (component == 'lifecycles') {
+      this.componentRef = this.includeTemplate.clear();
+      let lifecycles = this.resolver.resolveComponentFactory<LifecycleComponent>(LifecycleComponent);
+      this.componentRef = this.includeTemplate.createComponent<LifecycleComponent>(lifecycles);
+    } else if (component == 'contentprojection') {
+      this.componentRef = this.includeTemplate.clear();
+      let contentprojection = this.resolver.resolveComponentFactory<ContentProjectionComponent>(ContentProjectionComponent);
+      this.componentRef = this.includeTemplate.createComponent<ContentProjectionComponent>(contentprojection);  
+    } else if (component == 'viewencapsulation') {
+      this.componentRef = this.includeTemplate.clear();
+      let contentprojection = this.resolver.resolveComponentFactory<ContentProjectionComponent>(ContentProjectionComponent);
+      this.componentRef = this.includeTemplate.createComponent<ContentProjectionComponent>(contentprojection);
+    } else {
+      this.componentRef = this.includeTemplate.clear();
+      let home = this.resolver.resolveComponentFactory<DynamicComponentOne>(DynamicComponentOne);
+      this.componentRef = this.includeTemplate.createComponent<DynamicComponentOne>(home);
+    }
+  }
+
+  // Showing Dynamic Component using Every Second
+  public showDynamicComponent() {
+    if (this.count == 1) {
+      this.componentRef = this.includeTemplate.clear();
+      let lifecycles = this.resolver.resolveComponentFactory<LifecycleComponent>(LifecycleComponent);
+      this.componentRef = this.includeTemplate.createComponent<LifecycleComponent>(lifecycles);
+    } else if (this.count == 2) {
+      this.componentRef = this.includeTemplate.clear();
+      let contentprojection = this.resolver.resolveComponentFactory<ContentProjectionComponent>(ContentProjectionComponent);
+      this.componentRef = this.includeTemplate.createComponent<ContentProjectionComponent>(contentprojection);
+    } else if (this.count == 3) {
+      this.componentRef = this.includeTemplate.clear();
+      let viewEncapsulation = this.resolver.resolveComponentFactory<ViewEncapsulationComponent>(ViewEncapsulationComponent);
+      this.componentRef = this.includeTemplate.createComponent<ViewEncapsulationComponent>(viewEncapsulation);
+      this.count = 0;
+    } else {
+      this.componentRef = this.includeTemplate.clear();
+      let home = this.resolver.resolveComponentFactory<DynamicComponentOne>(DynamicComponentOne);
+      this.componentRef = this.includeTemplate.createComponent<DynamicComponentOne>(home);
+    }
+  }
 
 
 
 
 
 
+Angular Latest Version Dynamic Component Loader
+------------------------------------------------------
+
+
+Example 1:-
+-----------
+dynamic-component.html
+-----------------------
+<h1>Dynamic Component</h1>
+<div style="border : 2px solid red">
+
+  <button type="button" class="btn btn-primary" (click)="dynamicComponent('dynamicComponent')">Dynamic Component</button>
+  <button type="button" class="btn btn-primary" (click)="dynamicComponent('elementsComponent')">Elements Component</button>
+  <button type="button" class="btn btn-primary" (click)="dynamicComponent('homeComponent')">Elements Component</button>
+  <ng-container *ngComponentOutlet="testComponent"></ng-container>
+</div>
+
+dynamic-component.ts
+---------------------
+ testComponent = HomeComponent;
+  constructor() { }
+  ngOnInit() {
+
+  }
+
+  public dynamicComponent(component:any) {
+    if (component === 'dynamicComponent') {
+      this.testComponent = DynamicComponent;
+    } else if (component === 'elementsComponent') {
+      this.testComponent = ElementsComponent;
+    } else if (component === 'homeComponent') {
+      this.testComponent = HomeComponent;
+    }
+  }
 
 
 
 
+Example 2:-
+-----------
+
+dynamic-component.html
+-----------------------
+<h2>Dynamic Component</h2>
+<button type="button" (click)="createComponent('stylecomponent')">Style Component</button>
+<button type="button" (click)="createComponent('home')">Home Component</button>
+<ng-template component></ng-template>
+
+
+dynamic-component.ts
+---------------------
+ public component:any = this.container.createComponent<AppComponent>(AppComponent);
+  constructor(private container:ViewContainerRef){}
+  ngOnInit(): void {
+      
+  }
+
+  public createComponent(data:any){
+    this.container.clear();
+    if(data === 'stylecomponent'){
+      this.component = this.container.createComponent<StylesComponent>(StylesComponent);
+     } else{
+        this.component = this.container.createComponent<AppComponent>(AppComponent);
+     }
+  }
 
 
 
+Example 3:-
+------------
+dynamic-component.html
+-----------------------
 
+<h2>Dynamic Component</h2>
+<button type="button" (click)="createComponent(0)">Style Component</button>
+<button type="button" (click)="createComponent(1)">Home Component</button>
 
+<ng-template component></ng-template>
 
+dynamic-component.ts
+---------------------
+ public id = 0;
+  public component:any = this.container.createComponent<AppComponent>(AppComponent);
+  constructor(private container:ViewContainerRef){}
+  ngOnInit(): void {
+      this.createComponent(this.id);
+      interval(3000).subscribe(() => {this.createComponent(this.id)})
+  }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  public createComponent(data:any){
+    this.container.clear();
+    if(data === 0){
+      this.component = this.container.createComponent<StylesComponent>(StylesComponent);
+     } else{
+        this.component = this.container.createComponent<AppComponent>(AppComponent);
+     }
+     this.id = this.id === 0 ? 1 : 0
+  }
 
 
 

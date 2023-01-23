@@ -1,6 +1,48 @@
+========================================================================================================================================================================
+                                                                     JavaScript 
+========================================================================================================================================================================
 
-JavaScript 
-------------
+----------------------- Even Number & Hard Number Calculations "%"----------------------
+let a = 1000;
+let b = 20;
+
+// ------- Bhagaharam --------
+//      100) 1000 ( 10  => Even Number
+//           1000
+//         --------
+//            0     ====> Even Number
+
+if(a % 10 === 0){
+    console.log("EVEN NUMBER"); 
+}else {
+    console.log("HARD NUMBER");
+}
+======= Output ========
+EVENT NUMBER
+
+-----------------------------------------------------------------------------------------
+
+------------------------------ Percentage Calculations "/" ------------------------------
+let name = "Anaveni Rajkumar 10 Result";
+let telugu, hindi, english, maths, science, social;
+telugu = 80;
+hindi = 70;
+english = 60;
+maths = 60;
+science = 60;
+social = 80;
+let total = telugu + hindi + english + maths + science + social;
+console.log(name);
+console.log("Total Marks : ", total);
+let percentage = total / 6; // 6 => 6 subjects
+console.log("Percentage : ", percentage);
+
+=========== Output ==============
+Anaveni Rajkumar 10 Result
+Total Marks :  410
+Percentage :  68.33333333333333
+
+------------------------------------------------------------------------------------------
 
 1) Closers (Scope Chain)
 -------------------------
@@ -113,6 +155,16 @@ ex:- condition ? true : false;
      let b = 8;
      let big = a > b ? a : b;
      console.log(big);
+
+     let abc = "abcd";
+     let a = abc === 'abcd' ? 'Add' : 'Remove';
+     console.log(a); // Add
+
+     var pluralForm = function (n) {
+       return n === 0 ? 0 : n === 1 ? 1 : n === 2 ? 2 : null;
+     };
+     console.log(pluralForm(2));
+
 
 *Note if, else ni vaadithe code length peruguthundi. so anduke "ternary operators" ni use chestam.
 
@@ -484,18 +536,227 @@ let resultTwo = arr3.flat(Infinity);
 console.log(resultTwo);
 
 
+25) DotNotation. vs Square Bracket[]
+-------------------------------------
+
+let person = {
+   firstName : 'Anaveni',
+  'last Name' : 'Rajkumar',
+   8328369027 : 'Mobile Number 8328369027',
+};
+
+console.log(person.firstName); // Anaveni -> using "Dot Notation"
+console.log(person['last Name']); // Object Key anedi "string" lo vundi and "Spaces" vunte appudu Square Brackets ni Use Cheyali -> Rajkumar -> using "Square Backet"
+console.log(person[8328369027]); // Object Key anedi Number lo Unnappudu Square Brackets ni Use Cheyali -> Mobile Number 8328369027 -> using "Square Backet"
+
+26) DOM Traversal and DOM Manipulation
+---------------------------------------
+<!DOCTYPE html>
+  <html>
+     <head>
+          <title>JavaScript</title>
+     </head>
+   <body>
+       <div class="d1">
+            <h1>This is heading 1</h1>
+            <h2>This is heading 2</h2>
+       </div>
+       <div class="d2">
+          <p>This is paragraph 0</p>
+          <p class="p1"> This is paragraph 1
+            <span>this is span 1</span>
+            <span>this is span 2</span>
+          <p>
+          <p>This is paragraph 2</p>
+       </div>
+ 
+      <script>
+          let p = document.querySelector('.p1');
+          console.log(p); // <p class="p1"> This is paragraph 1<p>
+          console.log(p.children[0],p.children[1]); // <span>this is span 1</span> <span>this is span 2</span> -> "children" is create Array of Elements
+          console.log(p.childNodes); // Array of Elements
+          console.log(p.nextElementSibling); // <p>This is paragraph 2</p>
+          console.log(p.previousElementSibling); // <p>This is paragraph 0</p>
+          console.log(p.parentElement); // <div class="d2"> <p class="p1"> This is paragraph 1<p> <p>This is paragraph 2</p> </div>
+          console.log(p.parentElement.previousElementSinling); //  <div class="d1"> <h1>This is heading 1</h1> <h2>This is heading 2</h2> </div>
+          console.log(p.parentElement.previousElementSinling.children[0]); //  <h1>This is heading 1</h1>
+      </script>
+   </body>
+</html>
 
 
+27) Create Dynamic 'html' elements and Remove 'html' elements Dynamically
+-------------------------------------------------------------------------- 
+<!DOCTYPE html>
+  <html>
+     <head>
+          <title>JavaScript</title>
+     </head>
+   <body>
+       <div>
+           <p>This is paragraph 4</p> -> Dynamically Created "tag" and "Content" -> Example 2
+           <p>This is paragraph 1</p>
+           <p>This is paragraph 2</p>
+           <p class="p5">This is paragraph 5</p>  -> Dynamically Deleting this "Tag and Content"
+           <p>This is paragraph 3</p> -> Dynamically Created "tag" and "Content" -> Example 1
+       </div>
+ 
+      <script>
+         // Example 1
+         let div = document.querySelector('div');
+         let p = document.createElement('p'); // dynamically create <p> <p/> only tag 
+         p.innerHTML = "This is paragraph 3"; // adding p tag "Content"
+         div.appendChild(p); // adding paragraph into this "div" only
+
+         // Example 2 Adding tag and Content set Location path
+         let p1 = document.querySelector('p');
+         let p4 = document.createElement('p4'); // dynamically create <p> <p/> only tag 
+         p4.innerHTML = "This is paragraph 4"; // adding p tag "Content"
+         div.insertBefore(p1,p);  // "<p>This is paragraph 1</p>" e tag mundu Dynamic ga "<p>This is paragraph 4</p>" ane "Tag and Content" Create Avuthundi
+        
+         // Delete html "tag and Content" 
+         let p5 = document.querySelector('.p5');
+         p5.remove(); // or delete using div tag  -> div.removeChild(p5);
+
+      </script>     
+    </body>
+</html>
 
 
+28) Only Matching Data Two Arrays 
+-----------------------------------
+Example 1
+---------
+<script>
+  debugger;
+  let names1 = ['a', 'b', 'c', 'd'];
+  let names2 = ['a', 'b'];
+  let allNames = []; // [ "a", "b" ]
+
+  names1.forEach((e) => nameFinder(e));
+  
+  function nameFinder(name) {
+    let all = names2.filter((e) => e === name);
+    all.forEach((e) => {
+      allNames.push(e);
+    });
+  }
+ console.log(allNames);
+  </script>
+
+Example 2
+----------
+ <script>
+  debugger;
+  let names1 = ['a', 'b', 'c', 'd'];
+  let names2 = ['a', 'b'];
+  let allNames = []; // [ "a", "b" ]
+
+  names1.forEach((e) => nameFinder(e));
+
+  function nameFinder(name) { 
+    let abcd = names2.filter((e) => e === name);
+     allNames.push(abcd);
+  }
+  var merged = [].concat.apply([], allNames);
+  console.log(merged);
+
+  </script>
 
 
+29) this keyword (Represents an Object)
+---------------------------------------
+
+let name = "ABCD";
+console.log(this);
+comsole.log(this.name);
+
+let person = {
+  name : "Anaveni Rajkumar",
+  age :24
+}
+
+function wish(msg1){
+   console.log("Hello", this.name,msg1); // Hello Anaveni Rajkumar Good Morning  
+   console.log("Hello",msg1); // Hello 12345 
+}
+
+wish.call(person, "Good Morning"); // call method
+wish.apply(person,["12345"]); // apply method take array format
+let a = wish.bind(person);
+a("aaaaaaaaaa")
 
 
+30) Object Keys
+----------------
+
+const array1 = ['a', 'b', 'c'];
+const iterator = array1.keys();
+
+for (const key of iterator) {
+  console.log(key); // 0 , 1, 2
+}
+
+const arr = ['a','b','c']
+const sparseKeys = Object.keys(arr);
+  console.log(sparseKeys); // Array ["0", "1", "2"]
+
+var object = { 70: 'x', 21: 'y', 35: 'z' };
+var k = Object.keys(object);
+  console.log(k); // Array ["21", "35", "70"]
+
+const denseKeys = [...arr.keys()];
+console.log(denseKeys);  // [0, 1, 2]
 
 
+31) Array.from
+----------------
+let raj = (Array.from('Rajkumar'));
+console.log(raj);// expected output: Array ["R", "a", "j", "k", "u", "m", "a", "r"]
+
+console.log(Array.from([1, 2, 3], x => x + x));
+// expected output: Array [2, 4, 6]
+
+32) flat()
+-----------
+const arr1 = [0, 1, 2, [3, 4]];
+console.log(arr1.flat()); // output: [0, 1, 2, 3, 4]
+const arr2 = [0, 1, 2, [[[3, 4]]]];
+console.log(arr2.flat(2)); // output: [0, 1, 2, [3, 4]]
+
+32) flatMap()
+--------------
+const arr1 = [1, 2, [3], [4, 5], 6, []];
+const flattened = arr1.flatMap(num => num);
+console.log(flattened); // output: Array [1, 2, 3, 4, 5, 6]
 
 
+33) Date Object
+----------------
+*Note -> Month start from 0 - 11 (Jan - December);
+*Note -> Sunday start from 0 - 6 (Sunday - Saturday) // days
+
+let date = new Date(); // today date
+let todayDate = "Oct 1 2022";
+console.log(new Date(todayDate)); // Oct 1 2022
+let date2 = new Date(2022,9,1); // year, month, date
+console.log(date2); // Oct 01 2022 GMT+0530 (India Standard Time)
+let date3 = new Date(2022,9,1,9,1); // year, month, date, time, minutes & also senconds
+console.log(date2); // Oct 01 2022 09:01:00 GMT+0530 (India Standard Time)
+
+date.getDay();
+date.getDate();
+date.getMonth();
+date.getYear();
+date.getFullYear();
+date.getTime();
+date.getMinutes();
+date.getMilliseconds();
+
+date.setDate(date.getDate()+2); // adding increment days
+console.log(date);
+date.setFullYear(date.getFullYear()+1); // adding increment year
+console.log(date);
 
 
 
