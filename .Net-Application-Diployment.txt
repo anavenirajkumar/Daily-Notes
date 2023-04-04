@@ -1,0 +1,309 @@
+
+
+.Net Application Diployment 
+---------------------------
+
+* go to the AWS Console & All Services
+* go to the Databse
+     -> click on the "RDS"
+     -> click on the "Databases" leftside
+            -> click on the "Create database"
+            -> select "Easy create"
+            -> Engine options : "Microsoft SQL Server"
+            -> DB instance size : "Free tier"
+            -> Settings DB Instance identifier : "DigitalTechJointDBInstance"
+            -> Credential Settings master username : "admin"
+            -> enter Master password : ""
+            -> confirm password : ""
+            -> click on the "Create database" button
+            -> select the Database & click on the "Modify" button
+                    -> go to the Storage autoscaling uncheck the checkbox "Enable storage autoscaling"
+                    -> uncheck the checkbox "Copy tags to snapshots"
+                    -> go to the Manitenance uncheck the checkbox "Enable auto minor version upgrade"
+            -> click on the "Continue" button
+            -> go to RDS Service -> DBInstances
+            -> click on the "digitaltechjointdbinstance"
+                     -> go to the "Connectivity & security"
+                     -> Copy the "Endpint" URL 
+            -> Open "SQL Database Server" in Local
+            -> click on the "Connect" button
+            -> Server type : "Database Engine"
+            -> Server name : paste the endpint url & ,portnumber -> aaaaaaaaaaaaaws,4311
+            -> Authentication : "SQL Server Authentication"
+            -> Login or Username : "admin"
+            -> Password : ""
+            -> click on the "Connect" button
+            -> right click on the "Databases" & create New Database : "WebLeads"
+                  -> Write Query USE WebLeads;
+                  -> Create Tables & Columns
+
+
+Create a Fresh ASP.Net Core Web Application
+--------------------------------------------
+* Write the ConnectionStrings
+     "ConnectionStrings" : {
+         "DefaultConnection" : "server= paste the endpoint url,port number;Database=WebLeads;Integrated Security=false;User ID=admin; Password=password;"
+      }
+* Write The Api's logics 
+
+* After Completed Backend
+
+* click on the "Extensions"
+      -> Manage Extensions
+      -> click on the "Online"
+      -> Search the "AWS"
+      -> Download the "AWS Toolkit for Visual Studio 2022"
+      -> After Close Visual Studio & Open Again
+      -> Open AWS "IAM" Service
+              -> go to the "Quick Links" & click on the "My security credentials"
+              -> click on the "Access keys"
+              -> click on the "Create New Access key" button
+              -> Download the "File"
+      -> go to the Visual Studio & click on the "View" 
+              -> AWS Explorer
+              -> click on the "add user" icon
+                     -> enter the Access Key ID : ""
+                     -> Enter Secret Acces key : ""
+                     -> Region : "Asia Pacific"
+                     -> click on the "Ok" button
+      -> Right click on the "Project"
+              -> Publish to AWS
+              -> select the "ASP.NET Core App to AWS Elastic Beanstalk on Windows"
+              -> click on the "Edit settings"
+              -> go to the Compute" : "t2.micro"
+              -> uncheck the checkbox "Enable Managed platform Updates"
+              -> go to the "Enhanced Health Reporting"
+                     -> select "Basic"
+              -> click on the "Publish" button.
+              -> it takes 5 - 10Minutes & after copy the "EndPoint" URL -> Backend URL
+
+      -> go to the AWS "Elastic Beanstalk" Service
+              -> click on the "Applications" leftside
+
+
+
+
+
+-----------------------------------------------------------------------------
+Diploy .Net Application to AWS Serverless using Lamda
+
+* develop backend application & test all Api's
+* go to the Nuget Packages install "Amazon.Lamda.AspNetCoreServer"
+* right click on the Project & Add a Class "LamdaFunction"
+    
+   public class LambdaFunction : Amazon.Lambda.AspNetCoreServer.APIGatewayProxyFunction
+{
+    protected override void Init(IWebHostBuilder builder)
+    {
+        builder
+            .UseContentRoot(Directory.GetCurrentDirectory())
+            .UseStartup() // .UseStartup<Startup>();
+            .UseApiGateway(); // UseLamdaServer();
+    }
+}
+
+* double click on the project in Visual Studio & Add line
+   <ItemGroup>
+        <DotNetCliTooReference Include="Amazon.Lamda.Tools" Version="2.2.0"/>   // Add this line
+   </ItemGroup>
+
+* After Saving & right click on the Project
+* click on the "Add" -> "AWS Serverless Template"
+        "Handler": "ProjectNameSpace::ProjectNameSpace.LambdaFunction::FunctionHandlerAsync",
+        "Runtime" : "dotnetcore3.1" // same version in local or edit here
+
+* right click on the project -> add -> New Item -> Search "JSON" -> select "JSON File"
+            -> Name : "aws-lamda-tools-defaults.json" -> Add button
+    
+  
+{
+    "Information" : [
+        "This file provides default values for the deployment wizard inside Visual Studio and the AWS Lambda commands added to the .NET Core CLI.",
+        "To learn more about the Lambda commands with the .NET Core CLI execute the following command at the command line in the project root directory.",
+        "dotnet lambda help",
+        "All the command line options for the Lambda command can be specified in this file."
+    ],
+    "profile" : "default",
+    "region"  : "us-east-1", // based on the current reason
+    "configuration" : "Release",
+    "framework"   : "netcoreapp3.1", //////////////
+    "s3-prefix" : "CoreAPI/", /////// AWS Bucket
+     "template" : "serverless.template",
+     "template-parameters" : "",
+    "s3-bucket" : "lamdabucketaug31", /// Bucket Name
+    "stack-name" : "CoreAPIStack"   /// Stack Name
+}
+
+
+* Go to the AWS "IAM" Service
+     -> click on the "Users" leftside
+           -> click on the "Add users"
+           -> User name : "promaticUser"
+           -> select the checkbox "Access key-Programmatic access"
+           -> click on the "Next Permisions" button
+           -> select the checkbox "Admin" -> AdminstrativeAccess
+           -> click on the "Next Tags" button & "Next Review" button
+           -> click on the "Create user" button
+           -> click on the "Download.csv" button
+           -> go to the "S3" Bucket
+                   -> click on the "Create bucket" button 
+                   -> Bucket name : "lamdabucketaug31" //////////
+                   -> AWS Region : "US East (N Verginia) us-east-1" ///////////
+                   -> click on the "Create Bucket" button
+* Click on the "View" in Visual Studio 
+           -> AWS Explorer
+           -> click on the "user" icon
+           -> Profile name : "default"
+           -> click on the "Import from CSV file" button
+           -> select the Region : "US East"
+           -> click on the "OK" Button
+
+* Right click on the Project
+           -> click on the "Publish to AWS Lamda" 
+           -> Stack Name : "CoreAPIStack"
+           -> S3 Bucket : "lamdabucketaug31" ///////////////
+           -> click on the "Publish" button and Wait Some Time for Complete Process
+           -> Copy the AWS Serverless URL  -> this is Backend Server Api Prod/ApiNames
+           -> go to the AWS Lamda -> functions
+                  -> click on the "API Gateway"
+
+
+
+
+---------------------------------------------------------------------
+  Diploy into Elastick Beanstalk
+
+install aws extention in visual studio
+
+* go to visual studio
+* click on the "Extentions" -> Manage Extenstions
+* Search "AWS"
+* select AWS Toolkit for Visual Studio 2017 and 2019
+* After Api's Ready
+* Right click on the Project -> Publish to AWS Elastic Beanstalk
+* click on the "User" icon
+* Go to the AWS "IAM" Service
+     -> click on the "Users" leftside
+           -> click on the "Add users"
+           -> User name : "MyDemoUser"
+           -> select the checkbox "Access key-Programmatic access"
+           -> click on the "Next Permisions" button
+           -> select the checkbox "Admin" -> AdminstrativeAccess
+           -> click on the "Next Tags" button & "Next Review" button
+           -> click on the "Create user" button
+           -> click on the "Download.csv" button
+
+in Visual Studio -> Profile Name : "MyDemoProfile"
+                 -> Storage Location : Shared Credentials File
+                 -> click on the "Import from CSV file" button
+                 -> Account Type : Standard AWS Account
+                 -> click on the "OK" Button
+                 -> click on the "Next" Button and Next
+                 -> Container Type : 64bit Windows Server-2019 running IIS-10
+                 -> Instance Type : t2.micro
+                 -> click on the "Next" and Next
+                 -> Project Build Configuration : Release Any CPU
+                 -> App proof  runtime : 4.0 Net Runtime or 5.0
+                 -> App path : Default Web Site/ 
+                 -> click on the "Next"  
+                 -> click on the "Diploy" button
+                 -> Copy the URL -> Test the Api's 
+         
+
+* if any Changes in Api's or Add Any New Api's
+* Right click on the Project -> Publish to AWS Elastic Beanstalk
+* select "Rediploy to an existing environment"
+* click on the "Next" and Next
+* click on the "Diploy" button
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
