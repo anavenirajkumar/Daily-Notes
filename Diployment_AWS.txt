@@ -1,0 +1,165 @@
+
+https://jasonwatmore.com/post/2021/05/10/net-core-31-aws-lambda-deploy-a-net-core-api-and-sql-server-db-to-lambda-and-rds
+
+* go to AWS Console.
+* Open "VPC" Service
+    -> click on the left side "Your VPCs"
+    -> click on the "Create VPC"  
+    -> name : my-vpc
+    -> IPv4 CIDR : 10.0.0.0/16
+    -> click on the "Create VPC" Button
+    -> click on the "Actions" button
+    -> click on the Enable DNS hostnames
+    -> check the checkbox "Enable" & Save changes button
+    
+    -> click on the "Subnets" leftside
+    -> click on the "Create subnet" button
+    -> select VPCID : "vpc_1282...."
+    -> click on the "add new subnet" buttons upto 1 of 4 subnets
+    -> Subnet name : public-subnet-1
+    -> Availability Zone : "us-east-1"
+    -> IPv4 : CIDR : 10.0.0.0/24
+
+    -> Subnet name : public-subnet-2
+    -> Availability Zone : "us-east-2"
+    -> IPv4 : CIDR : 10.0.1.0/24
+
+    -> Subnet name : private-subnet-1
+    -> Availability Zone : "us-east-1"
+    -> IPv4 : CIDR : 10.0.2.0/24
+
+    -> Subnet name : private-subnet-2
+    -> Availability Zone : "us-east-2"
+    -> IPv4 : CIDR : 10.0.3.0/24
+
+    -> click on the Create subnet
+
+
+    -> click on the Internet Gateways
+    -> click on the Create Internet gateway button
+ 
+    -> name : "my-internet-gateway"
+    -> click on the Create Internet gateway button
+    -> click on the "Actions" button
+            -> Attach VPC
+            -> select vpc "vpc_0668299302"
+            -> click on the Attach internet gateway button
+
+   -> click on the "NAT Gateways" leftside
+   -> click on the Create NAT Gateway button
+   -> name : my-nat-gateway
+   -> Subnet : public subnet
+   -> Connection type : Public
+   -> click on the Allocated Elactic IP
+   -> click on the Create Nat Gateway button
+   
+   -> click on the Route Tables leftside
+   -> edit Name : main-route-table -> 2nd checkbox
+   -> click on the Routes -> edit routes
+   -> click on the add route button 
+   -> Destination : 0.0.0.0/0
+   -> Target : nat-gateway
+   -> click on the save changes
+   -> go to route tables -> click on the Create route table button
+   -> name: public-route-table
+   -> select : vpc_928745272
+   -> click on the Create route table button
+   -> click on the Routes -> edit routes
+   -> click on the add route button 
+   -> Destination : 0.0.0.0/0
+   -> Target : internet-gateway
+   -> click on the save changes
+   -> go to the "Subnet associtions" tab
+   -> click on the "Edit Subnet associtions" button
+   -> select "public subnet1,2" and Save Associtions button
+
+
+   -> go to VPC and click on the "Security Groups" leftside
+   -> click on the "first" Security Group 
+   -> click on the "Edit inbound rules" button
+   -> click on the "Add rule" button
+   -> Type : All traffic
+   -> Source : Anywhere
+   -> Save rules
+
+
+* go to RDS
+   -> click on the "Subnet Groups" leftside
+   -> name : public-subnets
+   -> description : public-subnets
+   -> vpc : my-vpc
+   -> Avalability Zones : a,b
+   -> Subnets One in A and B 
+   -> click on the Create button
+
+   -> Create a Datababe Button
+   -> subnet-group : public-subnets
+   -> public acccess -> Yes
+   -> click on the Create Database button
+   
+
+* Create Labda Function for .Net Application
+   -> go to the "IAM" Service
+   -> click on the roles leftside
+   -> create role,
+   -> click lamda
+   -> next button
+   -> search : AWSLamdaVPCAccessExecuteRole and Select checkbox
+   -> next button, next button, next
+   -> role name : my-lamda-execution-role
+   -> click on the Create Role button
+
+* go to Lamda 
+   -> click on the Create function buttton
+   -> function name : my-dotnet-lamda
+   -> Runtime : .Net Core 5.0
+   -> Use an existing role
+   -> select existing role 
+   -> Adanced Settings
+        -> VPC : select
+        -> subnets : private-1, private-2
+        -> select security groups
+   -> click on the create function button
+
+
+* go to API Gateway
+   -> select -> HTTP -> Build
+   -> Add integration
+   -> select -> Lamda
+   -> select Lamda function
+   -> API Name : my-http-api  
+   -> Next button
+   -> Method : ANY
+   -> Resource path : /{proxy+}
+   -> Next button, Next button
+   -> Create button
+
+
+* Open .Net Application
+   -> add ConnectionStrings -> database.aws.tesdwjdjw; Initial Catalog=ECommerceApplication;User Id=admin; Password=rajkumar; Security=false
+   -> Add package -> Amazon.Lamda.AspNetCoreServer
+   -> create a "LambdaEntryPoint.cs"
+       using Amazon.Lambda.AspNetCoreServer;
+
+using Microsoft.AspNetCore.Hosting;
+
+namespace WebApi
+{
+    public class LambdaEntryPoint : APIGatewayHttpApiV2ProxyFunction
+    {
+        protected override void Init(IWebHostBuilder builder)
+        {
+            builder.UseStartup<Startup>();
+        }
+    }
+}
+
+* go to Lambda ->  Functions in AWS
+  -> click on the "Upload from" Zip
+  -> click on the "Runtime setting" Edit
+  -> Handler -> WebApi::WebApi.LambdaEntryPoint::FunctionHandlerAsync
+  -> Save button
+
+* Go to API Gateway
+  -> click on the my-http-api
+  -> copy Involk URL -> test the Api's
